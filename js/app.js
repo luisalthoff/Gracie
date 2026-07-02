@@ -1,6 +1,7 @@
 init();
 
 function init() {
+  loadDatabase();
   drawScreen();
 }
 
@@ -141,6 +142,7 @@ function toggleCategory(categoryId) {
     db.openCategoryId = categoryId;
   }
 
+  saveDatabase();
   drawScreen();
 }
 
@@ -150,7 +152,8 @@ function toggleFavorite(itemId) {
   if (!item) return;
 
   item.favorite = !item.favorite;
-
+ 
+  saveDatabase();
   drawScreen();
 }
 
@@ -161,6 +164,7 @@ function toggleSelected(itemId) {
 
   item.selected = !item.selected;
 
+  saveDatabase();
   drawScreen();
 }
 
