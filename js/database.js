@@ -4,7 +4,7 @@ const db = {
   categories: [
     {
       id: 1,
-      name: "Fruits",
+      name: "Frutas",
       icon: "🍎",
       items: [
         { id: 101, name: "Apple", favorite: false, selected: false },
@@ -51,3 +51,50 @@ const db = {
     }
   ]
 };
+
+
+// ============== DB FUNCTIONS ==================//
+
+function databaseFindCategory(categoryId)
+{
+    for (const category of db.categories)
+    {
+        if (category.id === categoryId)
+        {
+            return category;
+        }
+    }
+
+    console.error("Category not found:", categoryId);
+    return null;
+}
+
+function databaseFindItem(itemId)
+{
+    for (const category of db.categories)
+    {
+        for (const item of category.items)
+        {
+            if (item.id === itemId)
+            {
+                return item;
+            }
+        }
+    }
+
+    console.error("Item not found:", itemId);
+    return null;
+}
+
+function databaseValidate()
+{
+    if (!db.categories)
+    {
+        db.categories = [];
+    }
+
+    if (db.openCategoryId === undefined)
+    {
+        db.openCategoryId = null;
+    }
+}

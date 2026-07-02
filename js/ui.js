@@ -1,9 +1,11 @@
-function screenDraw() {
-  const app = document.getElementById("app");
+function screenDraw()
+{
+    const app = elementGet("app");
 
-  app.innerHTML = "";
+    elementClear(app);
 
-  for (const category of db.categories) {
-    app.appendChild(categoryElementCreate(category));
-  }
+    for (const category of db.categories)
+    {
+        app.appendChild(categoryElementCreate(category));
+    }
 }

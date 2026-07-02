@@ -19,9 +19,7 @@ function categoryHeaderCreate(category) {
 
   button.className = "category-header";
 
-  button.onclick = function () {
-    categoryToggle(category.id);
-  };
+  button.addEventListener("click", function (){categoryToggle(category.id);});
 
   const icon = document.createElement("span");
   icon.className = "category-icon";

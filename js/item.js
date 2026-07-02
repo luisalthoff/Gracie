@@ -33,9 +33,7 @@ function itemStarCreate(item) {
     button.classList.add("favorite");
   }
 
-  button.onclick = function () {
-    itemFavoriteToggle(item.id);
-  };
+  button.addEventListener("click", function () {itemFavoriteToggle(item.id);});
 
   return button;
 }
@@ -59,43 +57,31 @@ function itemCheckCreate(item) {
     button.classList.add("selected");
   }
 
-  button.onclick = function () {
-    itemSelectedToggle(item.id);
-  };
+  button.addEventListener("click", function (){itemSelectedToggle(item.id);});
 
   return button;
 }
 
-function itemFavoriteToggle(itemId) {
-  const item = itemFind(itemId);
+function itemFavoriteToggle(itemId)
+{
+    const item = databaseFindItem(itemId);
 
-  if (!item) return;
+    if (!item) return;
 
-  item.favorite = !item.favorite;
+    item.favorite = !item.favorite;
 
-  storageSave();
-  screenDraw();
+    storageSave();
+    screenDraw();
 }
 
-function itemSelectedToggle(itemId) {
-  const item = itemFind(itemId);
+function itemSelectedToggle(itemId)
+{
+    const item = databaseFindItem(itemId);
 
-  if (!item) return;
+    if (!item) return;
 
-  item.selected = !item.selected;
+    item.selected = !item.selected;
 
-  storageSave();
-  screenDraw();
-}
-
-function itemFind(itemId) {
-  for (const category of db.categories) {
-    for (const item of category.items) {
-      if (item.id === itemId) {
-        return item;
-      }
-    }
-  }
-
-  return null;
+    storageSave();
+    screenDraw();
 }
