@@ -1,13 +1,11 @@
-const STORAGE_KEY = "gracie-db-v1";
-
-function saveDatabase() {
+function storageSave() {
   const text = JSON.stringify(db);
 
-  localStorage.setItem(STORAGE_KEY, text);
+  localStorage.setItem(APP.storageKey, text);
 }
 
-function loadDatabase() {
-  const text = localStorage.getItem(STORAGE_KEY);
+function storageLoad() {
+  const text = localStorage.getItem(APP.storageKey);
 
   if (!text) return;
 
@@ -17,8 +15,8 @@ function loadDatabase() {
   db.categories = savedDb.categories;
 }
 
-function resetDatabase() {
-  localStorage.removeItem(STORAGE_KEY);
+function storageReset() {
+  localStorage.removeItem(APP.storageKey);
 
   location.reload();
 }
