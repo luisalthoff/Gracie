@@ -1,15 +1,38 @@
 :root {
-  --color-bg: #e8e2d5;
-  --color-card: #d5c3a3;
-  --color-text: #666663;
-  --color-active: #df8176;
-  --color-alert: #dd5f57;
-  --color-white: #ffffff;
-  --color-check: #ffd21a;
+  /*
+  --cor0: #e1e3e7;
+  --cor1: transparent;
+  --cor1: #0991f3;
+  --cor2: #014091;
+  --cor3: #f6ae2d;
+  --cor4: #a16e33;
+  --corA: #0991f3;
+*/
 
-  --radius: 18px;
-  --gap: 18px;
-  --side-padding: 28px;
+  --rad1: 8px;
 
-  --font-main: Arial, sans-serif;
+  --mrg0: 0px;
+  --mrg1: 0px 0px;
+  --mrg2: 20px;
+
+  --pdg0: 0px;
+  --pdg1: 120px; /* body vert */
+  --pdg2: 68px; /* body horz */
+  --pdg3: 10px 22px; /* botoes */
+
+  --minH: 100vh; /* body min height*/
+  --maxW: 430px; /* app */
+  --btnH: 50px;  /* alt btn */
+  --gap1: 4vh; /* btwn catgs */
+
+  --cb1: #4395fd;
+  --cb2: #f8a648;
+  --cb3: #969dab;
+  
+  --prim: #0991f3;
+  --secd: #969dab;
+  --tert: #f8a648;
+  --primT: #0991f333;
+  --secdT: #969dab33;
+  --tertT: #f8a64833;
 }

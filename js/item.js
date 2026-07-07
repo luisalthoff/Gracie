@@ -29,10 +29,6 @@ function itemStarCreate(item) {
   button.className = "star-button";
   button.textContent = item.favorite ? "★" : "☆";
 
-  if (item.favorite) {
-    button.classList.add("favorite");
-  }
-
   button.addEventListener("click", function () {itemFavoriteToggle(item.id);});
 
   return button;
@@ -47,17 +43,17 @@ function itemNameCreate(item) {
   return name;
 }
 
-function itemCheckCreate(item) {
+function itemCheckCreate(item)
+{
   const button = document.createElement("button");
-
+  const corBkd = "#ffffff";
+  const corAcc = "#0000ff";
+  
   button.className = "check-button";
   button.textContent = "✓";
-
-  if (item.selected) {
-    button.classList.add("selected");
-  }
-
-  button.addEventListener("click", function (){itemSelectedToggle(item.id);});
+  button.style.backgroundColor = item.selected ? corAcc : corBkd;
+ 
+  button.addEventListener("click", function () {itemSelectedToggle(item.id);});
 
   return button;
 }

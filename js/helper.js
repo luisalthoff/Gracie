@@ -3,11 +3,6 @@ function elementGet(id)
     return document.getElementById(id);
 }
 
-function elementCreate(type)
-{
-    return document.createElement(type);
-}
-
 function elementClear(element)
 {
     element.replaceChildren();
@@ -24,3 +19,32 @@ function idGenerate()
 {
     return Date.now();
 }
+
+function databaseSortText(a, b)
+{
+    return a.name.localeCompare(b.name);
+}
+
+function databaseSortCategories()
+{
+    db.categories.sort(databaseSortText);
+}
+
+function databaseSortItems()
+{
+    for (const category of db.categories)
+    {
+        category.items.sort(databaseSortText);
+    }
+}
+
+function sortByName(a, b)
+{
+    return a.name.localeCompare(b.name);
+}
+
+function sortByOrder(a, b)
+{
+    return a.order - b.order;
+}
+

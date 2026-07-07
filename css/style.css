@@ -1,66 +1,82 @@
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  margin: var(--mrg0);
+  padding: var(--pdg0);
   -webkit-tap-highlight-color: transparent;
+  font-size: medium;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Hide Scrollbars*/
+html,
+body {
+  overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 body {
-  min-height: 100vh;
-  background: var(--color-bg);
-  font-family: var(--font-main);
-  color: var(--color-text);
-  padding: 48px var(--side-padding);
+  min-height: var(--minH);
+  background-color: white;
+  padding: var(--pdg1) var(--pdg2);
 }
 
-button {
-  font-family: inherit;
+.btn-reset {
+  margin-bottom: var(--mrg2);
 }
 
-#app {
-  max-width: 430px;
-  margin: 0 auto;
-}
-
-.category {
-  margin-bottom: var(--gap);
-}
-
-.category-header {
-  width: 100%;
-  height: 60px;
+.btn {
+  background-color: var(--prim);
   border: none;
-  border-radius: var(--radius);
-  background: var(--color-card);
-  color: var(--color-text);
-  font-size: 26px;
-  font-weight: 700;
-
-  display: grid;
-  grid-template-columns: 64px 1fr 64px;
-  align-items: center;
-
+  border-radius: var(--rad1);
+  color: white;
+  padding: var(--pdg3);
+  font-size: 16px;
   cursor: pointer;
+  /*box-shadow:;
+  1px 1px 3px rgba(0, 0, 0, 0.3),
+    inset 2px 2px 3px rgba(255, 255, 255, 0.3);*/
 }
 
-.category.open .category-header {
-  background: var(--color-active);
-  color: var(--color-white);
+.btn:active {
+  /*box-shadow:
+    -1px -1px 0 rgba(0, 0, 0, 0.3),
+    inset -2px -2px 3px rgba(255, 255, 255, 0.3);*/
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.category-icon {
-  font-size: 30px;
+.category {
+  margin-bottom: var(--gap1);
 }
 
-.category-arrow {
-  font-size: 34px;
-  transition: transform 0.2s ease;
+.btn-header {
+  height: var(--btnH);
+  width: 100%;
+  display: grid;
+  grid-template-columns: 10% 80%;
+  align-items: center;
 }
 
-.category.open .category-arrow {
-  transform: rotate(90deg);
+.imgCat {
+  width: auto;
+}
+
+.imgCatHead {
+  height: 30px
+  /*filter: drop-shadow(-1px -1px 1px white)*/
+}
+
+.category.open .btn {
+  /*box-shadow:
+    -1px -1px 0 rgba(0, 0, 0, 0.5),
+    inset -2px -2px 3px rgba(255, 255, 255, 0.3);*/
+  border-radius: var(--rad1) var(--rad1) 0 0;
 }
 
 .items-panel {
@@ -68,33 +84,33 @@ button {
   max-height: 390px;
   overflow-y: scroll;
   overflow-x: auto;
-  background: var(--color-white);
-  border-bottom-left-radius: var(--radius);
-  border-bottom-right-radius: var(--radius);
-  padding: 10px 14px;
+  background-color: var(--primT);
+  border-bottom-left-radius: var(--rad1);
+  border-bottom-right-radius: var(--rad1);
+
   /* Hide scrollbar for Firefox */
-    scrollbar-width: none; 
-    
-    /* Hide scrollbar for IE and Edge */
-    -ms-overflow-style: none; 
+  scrollbar-width: none;
+
+  /* Hide scrollbar for IE and Edge */
+  -ms-overflow-style: none;
 }
 
 /* Hide scrollbar for Chrome, Safari, and Opera */
 .items-panel::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
-
 
 .category.open .items-panel {
   display: block;
 }
 
 .item-row {
-  min-height: 72px;
-  display: grid;
-  grid-template-columns: 64px 1fr 64px;
+  min-height: 60px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  margin-inline: var(--mrg2);
 }
 
 .item-row:last-child {
@@ -103,37 +119,40 @@ button {
 
 .star-button {
   border: none;
-  background: transparent;
-  color: var(--color-text);
-  font-size: 42px;
-  line-height: 1;
+  background-color: transparent;
+  color: var(--prim);
+  font-size: 21px;
   cursor: pointer;
 }
 
-.star-button.favorite {
-  color: var(--color-check);
+.star-button-catg {
+  font-size: large;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .item-name {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 14px;
 }
 
 .check-button {
-  width: 52px;
-  height: 52px;
-  border: 3px solid var(--color-active);
+  width: 22px;
+  height: 22px;
+  background-color: var(--prim);
+  border: 1px solid var(--prim);
   border-radius: 50%;
-  background: transparent;
-  color: transparent;
-  font-size: 34px;
-  font-weight: 900;
-  line-height: 1;
+  color: white;
+  font-family: "SF Compact";
+  font-size: large;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .check-button.selected {
-  border-color: var(--color-check);
-  background: var(--color-check);
-  color: var(--color-white);
+  border-color: var(--prim);
+  background-color: var(--prim);
+  color: white;
+}
+
+.favorite-row {
+  grid-template-columns: 64px 1fr 64px;
 }

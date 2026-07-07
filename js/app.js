@@ -1,8 +1,11 @@
 appInit();
 
-function appInit()
-{
-  storageLoad();
-  databaseValidate();
-  screenDraw();
+function appInit() {
+    storageLoad();
+    databaseValidate();
+
+    //databaseSortCategories();
+    databaseSortItems();
+
+    screenDraw();
 }

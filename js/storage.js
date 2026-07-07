@@ -19,4 +19,5 @@ function storageReset() {
   localStorage.removeItem(APP.storageKey);
 
   location.reload();
+  alert("ressetado")
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--Generator: Apple Native CoreSVG 341-->
+
+<svg
+   version="1.1"
+   viewBox="0 0 79.35746 79.308594"
+   id="svg36"
+   width="79.35746"
+   height="79.308594"
+   sodipodi:docname="addV.svg"
+   inkscape:version="1.4.3 (0d15f750, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="5.5445323"
+     inkscape:cx="43.466245"
+     inkscape:cy="38.326046"
+     inkscape:window-width="1171"
+     inkscape:window-height="1186"
+     inkscape:window-x="700"
+     inkscape:window-y="30"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Regular-S" />
+  <defs
+     id="defs36" />
+  <!--glyph: "", point size: 100.0, font version: "20.0d8e1", template writer version: "138.0.0"-->
+  <style
+     id="style1">.monochrome-0 {-sfsymbols-motion-group:1;-sfsymbols-layer-tags:2b15445541800aa2 plus.circle.fill}
+.monochrome-1 {opacity:0.0;-sfsymbols-clear-behind:true;-sfsymbols-motion-group:0;-sfsymbols-always-pulses:true;-sfsymbols-layer-tags:2b15445541800aa2 plus.circle.fill}
+
+.multicolor-0:systemGreenColor {-sfsymbols-motion-group:1;-sfsymbols-layer-tags:2b15445541800aa2 plus.circle.fill}
+.multicolor-1:white {-sfsymbols-motion-group:0;-sfsymbols-always-pulses:true;-sfsymbols-layer-tags:2b15445541800aa2 plus.circle.fill}
+
+.hierarchical-0:tertiary {-sfsymbols-motion-group:1;-sfsymbols-layer-tags:2b15445541800aa2 plus.circle.fill}
+.hierarchical-1:primary {-sfsymbols-motion-group:0;-sfsymbols-layer-tags:2b15445541800aa2 plus.circle.fill}
+
+.SFSymbolsPreviewWireframe {fill:none;opacity:1.0;stroke:black;stroke-width:0.5}
+</style>
+  <g
+     id="Symbols"
+     transform="translate(-1410.1659,-811.0918)"
+     style="fill:#2ecc71;fill-opacity:1;stroke:#000000;stroke-opacity:1">
+    <g
+       id="Regular-S"
+       transform="translate(1403.58,886)"
+       style="display:inline;fill:#2ecc71;fill-opacity:1;stroke:#000000;stroke-opacity:1">
+      <path
+         class="monochrome-0 multicolor-0:systemGreenColor hierarchical-0:tertiary SFSymbolsPreviewWireframe"
+         d="m 46.2402,4.15039 c 21.7774,0 39.4532,-17.67579 39.4532,-39.40429 0,-21.7285 -17.6758,-39.4043 -39.4532,-39.4043 -21.7285,0 -39.40426,17.6758 -39.40426,39.4043 0,21.7285 17.67576,39.40429 39.40426,39.40429 z"
+         id="path33"
+         style="fill:#2ecc93;stroke:#ffffff;stroke-width:0.3;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1" />
+      <path
+         class="monochrome-1 multicolor-1:white hierarchical-1:primary SFSymbolsPreviewWireframe"
+         d="m 27.1484,-35.2051 c 0,-2.2949 1.6114,-3.8574 3.9063,-3.8574 h 11.4258 v -11.4258 c 0,-2.2949 1.4648,-3.8574 3.7109,-3.8574 2.2949,0 3.8574,1.5625 3.8574,3.8574 v 11.4258 h 11.4746 c 2.2461,0 3.8575,1.5625 3.8575,3.8574 0,2.2461 -1.6114,3.7598 -3.8575,3.7598 H 50.0488 v 11.4258 c 0,2.2949 -1.5625,3.8574 -3.8574,3.8574 -2.2461,0 -3.7109,-1.6113 -3.7109,-3.8574 V -31.4453 H 31.0547 c -2.2949,0 -3.9063,-1.5137 -3.9063,-3.7598 z"
+         id="path34"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

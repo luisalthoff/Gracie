@@ -15,35 +15,35 @@ function categoryElementCreate(category) {
 }
 
 function categoryHeaderCreate(category) {
-  const button = document.createElement("button");
+  const btn = document.createElement("button");
 
-  button.className = "category-header";
+  btn.className = "btn btn-header";
 
-  button.addEventListener("click", function (){categoryToggle(category.id);});
+  btn.addEventListener("click", function (){categoryToggle(category.id);});
 
-  const icon = document.createElement("span");
-  icon.className = "category-icon";
-  icon.textContent = category.icon;
+  const imgCtg = document.createElement("img");
+  imgCtg.src = category.icon;
+  imgCtg.classList = "imgCatHead";
 
   const name = document.createElement("span");
-  name.className = "category-name";
+  name.className = "categoria";
   name.textContent = category.name;
 
-  const arrow = document.createElement("span");
-  arrow.className = "category-arrow";
-  arrow.textContent = "›";
+  btn.appendChild(imgCtg);
+  btn.appendChild(name);
+  btn.style.color = "#ffffff";
 
-  button.appendChild(icon);
-  button.appendChild(name);
-  button.appendChild(arrow);
-
-  return button;
+  return btn;
 }
 
-function categoryToggle(categoryId) {
-  if (db.openCategoryId === categoryId) {
+function categoryToggle(categoryId)
+{
+  if (db.openCategoryId === categoryId)
+  {
     db.openCategoryId = null;
-  } else {
+  }
+  else
+  {
     db.openCategoryId = categoryId;
   }
 

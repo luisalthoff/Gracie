@@ -1,0 +1,91 @@
+
+<!--html>
+  <style>
+    .gradient {
+      width: 100px;
+      height: 100px;
+      background-image: linear-gradient(
+        135deg,
+        hsl(0deg 100% 49%) 0%,
+        hsl(16deg 100% 49%) 11%,
+        hsl(22deg 100% 49%) 21%,
+        hsl(28deg 100% 49%) 30%,
+        hsl(32deg 100% 49%) 37%,
+        hsl(36deg 100% 49%) 44%,
+        hsl(39deg 100% 48%) 49%,
+        hsl(42deg 100% 48%) 52%,
+        hsl(45deg 100% 48%) 55%,
+        hsl(48deg 100% 48%) 57%,
+        hsl(51deg 100% 48%) 60%,
+        hsl(54deg 100% 48%) 63%,
+        hsl(56deg 100% 48%) 69%,
+        hsl(59deg 100% 48%) 77%,
+        hsl(61deg 100% 48%) 87%,
+        hsl(63deg 100% 50%) 100%
+      );
+    }
+
+    body {
+      background-color: #0991f3;
+    }
+    button:active {
+      box-shadow:
+        -1px -1px 0 rgba(0, 0, 0, 0.5),
+        inset -2px -2px 3px rgba(255, 255, 255, 0.3);
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 10px 22px;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 20px;
+      box-shadow:
+        1px 1px 3px rgba(0, 0, 0, 0.5),
+        inset 2px 2px 3px rgba(255, 255, 255, 0.3);
+    }
+
+    div {
+      height: 60px;
+      width: 60px;
+      margin: 20px;
+      border-radius: 10%;
+    }
+
+    .recesso {
+      width: 80px;
+      box-shadow:
+        -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px 2px 4px rgba(255, 255, 255, 0.3);
+    }
+
+    .black.box {
+      width: 100px;
+      height: 100px;
+      --shadow-color: hsl(0deg 0% 0% / 0.5);
+    }
+    .darker.box {
+      --shadow-color: hsl(220deg 100% 50%);
+    }
+    .goldilocks.box {
+      --shadow-color: hsl(220deg 60% 50%);
+    }
+    .box {
+      filter: drop-shadow(1px 2px 8px var(--shadow-color));
+    }
+  </style>
+
+  <body>
+    <button>push-button</button>
+    <div class="recesso"></div>
+    <div class="gradient"></div>
+
+    <div class="black box">Too grey</div>
+    <div class="darker box">Too bright</div>
+    <div class="goldilocks box">Just right</div>
+  </body>
+</html>
