@@ -1,4 +1,5 @@
 appInit();
+storageReset();
 
 function appInit() {
     storageLoad();
