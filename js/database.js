@@ -19,7 +19,7 @@ const db = {
     {
       id: 1,
       name: "Hortifruti",
-      icon: "/img/banana.png",
+      icon: "img/banana.png",
       color: cb1,
       position: 1,
       items: [
@@ -34,7 +34,7 @@ const db = {
     {
       id: 2,
       name: "Açougue",
-      icon: "/img/carne.png",
+      icon: "img/carne.png",
       color: cb2,
       position: 2,
       items: [
@@ -46,7 +46,7 @@ const db = {
     {
       id: 3,
       name: "Frios & Laticínios",
-      icon: "/img/queijo.png",
+      icon: "img/queijo.png",
       color: cb3,
       position: 3,
       items: [
@@ -72,7 +72,7 @@ const db = {
     {
       id: 4,
       name: "Produtos Básicos",
-      icon: "/img/arroz.png",
+      icon: "img/arroz.png",
       color: cb3,
       position: 4,
       items: [
@@ -87,7 +87,7 @@ const db = {
     {
       id: 5,
       name: "Padaria",
-      icon: "/img/pao.png",
+      icon: "img/pao.png",
       color: cb3,
       position: 5,
       items: [
@@ -106,7 +106,7 @@ const db = {
     {
       id: 6,
       name: "Bebidas",
-      icon: "/img/bebida.png",
+      icon: "img/bebida.png",
       color: cb3,
       position: 6,
       items: [
@@ -122,7 +122,7 @@ const db = {
     {
       id: 7,
       name: "Higiene",
-      icon: "/img/ph.png",
+      icon: "img/ph.png",
       color: cb3,
       position: 7,
       items: [
@@ -132,7 +132,7 @@ const db = {
     {
       id: 8,
       name: "Limpeza",
-      icon: "/img/esponja.png",
+      icon: "img/esponja.png",
       color: cb3,
       position: 8,
       items: [
