@@ -9,6 +9,17 @@
   --corA: #0991f3;
 */
 
+  --viuW: 100vw;
+
+  /* BODY */
+  --pad1: calc(var(--viuW) * 0.05);
+
+  /* CTG BTN */
+  --imgW: calc(var(--viuW) * 0.2);
+  --imgH: var(--imgW);
+  --imgG: calc(var(--imgW) / 8);
+  --btnP: calc(var(--imgH) * 0.015) ;
+  
   --rad1: 8px;
 
   --mrg0: 0px;
@@ -16,19 +27,18 @@
   --mrg2: 20px;
 
   --pdg0: 0px;
-  --pdg1: 120px; /* body vert */
+  --pdg1: 20px; /* body vert */
   --pdg2: 68px; /* body horz */
-  --pdg3: 10px 22px; /* botoes */
+  --pdg3: 10px 10px; /* botoes */
 
   --minH: 100vh; /* body min height*/
   --maxW: 430px; /* app */
-  --btnH: 50px;  /* alt btn */
-  --gap1: 4vh; /* btwn catgs */
+  --btnH: 50px; /* alt btn */
 
   --cb1: #4395fd;
   --cb2: #f8a648;
   --cb3: #969dab;
-  
+
   --prim: #0991f3;
   --secd: #969dab;
   --tert: #f8a648;

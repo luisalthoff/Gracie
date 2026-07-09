@@ -1,12 +1,14 @@
 function screenDraw() {
-  const app = elementGet("app");
+  const app = elementGet("divCtgs");
 
   elementClear(app);
 
-  resetButton();
-  renderFavorites(app);
-  renderCategories(app);
+  //renderFavorites(app);
+  showCategories(app);
 }
+
+
+
 
 function renderCategories(app) {
   for (const category of db.categories) {

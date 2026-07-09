@@ -1,7 +1,8 @@
-function itemPanelCreate(category) {
+function itemPanelCreate(category)
+{
   const panel = document.createElement("div");
-
-  panel.className = "items-panel";
+  alert("painel");
+  panel.className = "pnl";
 
   for (const item of category.items) {
     panel.appendChild(itemRowCreate(item));
@@ -18,7 +19,7 @@ function itemRowCreate(item) {
 
   row.appendChild(itemStarCreate(item));
   row.appendChild(itemNameCreate(item));
-  row.appendChild(itemCheckCreate(item));
+  row.appendChild(itemArrowCreate(item));
 
   return row;
 }
@@ -43,13 +44,29 @@ function itemNameCreate(item) {
   return name;
 }
 
-function itemCheckCreate(item)
+function itemArrowCreate(item) {
+  const button = document.createElement("button");
+
+  button.textContent = "➤";
+  button.className = item.selected ? "arrow-button" : "arrow-button-sel";
+  
+  button.addEventListener("click", function () {
+    itemSelectedToggle(item.id);
+  });
+
+  return button;
+}
+
+
+/*
+
+function itemArrowCreate(item)
 {
   const button = document.createElement("button");
   const corBkd = "#ffffff";
-  const corAcc = "#0000ff";
+  const corAcc = prim;
   
-  button.className = "check-button";
+  button.className = "arrow-button";
   button.textContent = "✓";
   button.style.backgroundColor = item.selected ? corAcc : corBkd;
  
@@ -57,11 +74,12 @@ function itemCheckCreate(item)
 
   return button;
 }
+*/
 
 function itemFavoriteToggle(itemId)
 {
     const item = databaseFindItem(itemId);
-
+  
     if (!item) return;
 
     item.favorite = !item.favorite;

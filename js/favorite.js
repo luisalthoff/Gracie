@@ -77,7 +77,7 @@ function favoriteRowCreate(item, icon)
 
     row.appendChild(iconBox);
     row.appendChild(itemNameCreate(item));
-    row.appendChild(itemCheckCreate(item));
+    row.appendChild(itemArrowCreate(item));
 
     return row;
 }

@@ -13,6 +13,10 @@ const UI =
     itemHeight: 72
 };
 
+const rootStyles = getComputedStyle(document.documentElement);
+const prim = rootStyles.getPropertyValue('--prim');
+
+
 /*
 const plt1 = [ "#2A9d8f", "#e9c46a", "#f4a261", "#e76f51", "#e0fbfc","#000"];
 const plt2 = [ "#244855", "#e64833", "#874f41", "#90aead", "#fbe9d0"];
@@ -52,8 +56,6 @@ const CORES =
 //document.documentElement.style.setProperty('--corA', CORES.corA);
 
 // Read a color palette
-//const rootStyles = getComputedStyle(document.documentElement);
-//const corPal = rootStyles.getPropertyValue('--plt1');
 
 */
 

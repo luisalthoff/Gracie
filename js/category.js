@@ -1,52 +1,42 @@
-function categoryElementCreate(category) {
-  const section = document.createElement("section");
+function showCategories(ctgs) {
+  for (const dbCtg of db.categories) {
+    const btn = document.createElement("button");
 
-  section.className = "category";
-  section.id = "category-" + category.id;
+    btn.id = "btn-" + dbCtg.id;
+    btn.className = "btn";
+    if (db.openCategoryId === dbCtg.id) {
+      btn.classList.add("open");
+    }
 
-  if (db.openCategoryId === category.id) {
-    section.classList.add("open");
+    btn.addEventListener("click", function () {
+      categoryToggle(dbCtg.id);
+      showItems(dbCtg);
+    });
+
+    const imgCtg = document.createElement("img");
+    imgCtg.src = dbCtg.icon;
+    imgCtg.classList = "imgCtg";
+    btn.appendChild(imgCtg);
+    ctgs.appendChild(btn);
   }
 
-  section.appendChild(categoryHeaderCreate(category));
-  section.appendChild(itemPanelCreate(category));
-
-  return section;
+  return ctgs;
 }
 
-function categoryHeaderCreate(category) {
-  const btn = document.createElement("button");
-
-  btn.className = "btn btn-header";
-
-  btn.addEventListener("click", function (){categoryToggle(category.id);});
-
-  const imgCtg = document.createElement("img");
-  imgCtg.src = category.icon;
-  imgCtg.classList = "imgCatHead";
-
-  const name = document.createElement("span");
-  name.className = "categoria";
-  name.textContent = category.name;
-
-  btn.appendChild(imgCtg);
-  btn.appendChild(name);
-  btn.style.color = "#ffffff";
-
-  return btn;
+function showItems(category) {
+  const container = document.getElementById("prepare");
+  container.innerHTML = "";
+  container.appendChild(itemPanelCreate(category));
 }
 
-function categoryToggle(categoryId)
-{
-  if (db.openCategoryId === categoryId)
-  {
+function categoryToggle(categoryId) {
+  if (db.openCategoryId === categoryId) {
     db.openCategoryId = null;
-  }
-  else
-  {
+  } else {
     db.openCategoryId = categoryId;
   }
 
   storageSave();
   screenDraw();
 }
+
