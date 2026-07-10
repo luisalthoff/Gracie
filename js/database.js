@@ -126,7 +126,7 @@ const db = {
       color: cb3,
       position: 7,
       items: [
-        { id: 701, name: "Escova de Dente", favorite: false, selected: false, cost: 0 },
+        { id: 701, name: "Escova de Dentes", favorite: false, selected: false, cost: 0 },
       ],
     },
     {

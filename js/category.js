@@ -1,21 +1,20 @@
 function showCategories(ctgs) {
   for (const dbCtg of db.categories) {
     const btn = document.createElement("button");
-
     btn.id = "btn-" + dbCtg.id;
-    btn.className = "btn";
+    btn.className = "btnCtg";
+
     if (db.openCategoryId === dbCtg.id) {
       btn.classList.add("open");
     }
 
     btn.addEventListener("click", function () {
       categoryToggle(dbCtg.id);
-      showItems(dbOpenCategoryId);
     });
 
     const imgCtg = document.createElement("img");
     imgCtg.src = dbCtg.icon;
-    imgCtg.classList = "imgCtg";
+    imgCtg.className = "imgCtg";
     btn.appendChild(imgCtg);
     ctgs.appendChild(btn);
   }
@@ -23,21 +22,38 @@ function showCategories(ctgs) {
   return ctgs;
 }
 
-function showItems(category) {
-  alert(category);
-  const container = document.getElementById("prepare");
-  container.innerHTML = "";
-  container.appendChild(itemPanelCreate(category));
+function listsDraw() {
+  const prepare = document.getElementById("prepare");
+  const shop = document.getElementById("shop");
+
+  prepare.innerHTML = "";
+  shop.innerHTML = "";
+
+  prepare.appendChild(listTitleCreate("Lista"));
+  shop.appendChild(listTitleCreate("Compras"));
+
+  const category = db.openCategoryId == null
+    ? null
+    : databaseFindCategory(db.openCategoryId);
+
+  if (category) {
+    prepare.appendChild(itemPanelCreate(category, false));
+  } else {
+    prepare.appendChild(itemEmptyCreate("Neni, escolhe um tipo de produto aí. Não esquece da coca-zero"));
+  }
+
+  shop.appendChild(shoppingPanelCreate());
+}
+
+function listTitleCreate(text) {
+  const title = document.createElement("div");
+  title.className = "list-title";
+  title.textContent = text;
+  return title;
 }
 
 function categoryToggle(categoryId) {
-  if (db.openCategoryId === categoryId) {
-    db.openCategoryId = null;
-  } else {
-    db.openCategoryId = categoryId;
-  }
-
+  db.openCategoryId = db.openCategoryId === categoryId ? null : categoryId;
   storageSave();
   screenDraw();
 }
-

@@ -1,22 +1,66 @@
+let storageAvailable = true;
+
+function storageRead(key) {
+  if (!storageAvailable) return null;
+
+  try {
+    return localStorage.getItem(key);
+  } catch (error) {
+    storageAvailable = false;
+    console.warn("Persistent storage is unavailable in this preview.", error);
+    return null;
+  }
+}
+
+function storageWrite(key, value) {
+  if (!storageAvailable) return false;
+
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (error) {
+    storageAvailable = false;
+    console.warn(
+      "Changes will work for this session, but this preview cannot save them.",
+      error,
+    );
+    return false;
+  }
+}
+
+function storageRemove(key) {
+  if (!storageAvailable) return false;
+
+  try {
+    localStorage.removeItem(key);
+    return true;
+  } catch (error) {
+    storageAvailable = false;
+    console.warn("Persistent storage is unavailable in this preview.", error);
+    return false;
+  }
+}
+
 function storageSave() {
-  const text = JSON.stringify(db);
-  
-  localStorage.setItem(APP.storageKey, text);
+  storageWrite(APP.storageKey, JSON.stringify(db));
 }
 
 function storageLoad() {
-  const text = localStorage.getItem(APP.storageKey);
+  const text = storageRead(APP.storageKey);
 
   if (!text) return;
-  
-  const savedDb = JSON.parse(text);
 
-  db.openCategoryId = savedDb.openCategoryId;
-  db.categories = savedDb.categories;
+  try {
+    const savedDb = JSON.parse(text);
+
+    db.openCategoryId = savedDb.openCategoryId;
+    db.categories = savedDb.categories;
+  } catch (error) {
+    console.warn("Saved Gracie data could not be loaded.", error);
+  }
 }
 
 function storageReset() {
-  localStorage.removeItem(APP.storageKey);
-
+  storageRemove(APP.storageKey);
   location.reload();
 }

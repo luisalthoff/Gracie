@@ -1,7 +1,9 @@
+
+
 * {
   box-sizing: border-box;
-  margin: var(--mrg0);
-  padding: var(--pdg0);
+  margin: 0;
+  padding: 0;
   -webkit-tap-highlight-color: transparent;
   font-size: medium;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -13,6 +15,7 @@ body {
   overflow: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  background: white;
 }
 
 html::-webkit-scrollbar,
@@ -22,192 +25,256 @@ body::-webkit-scrollbar {
 
 body {
   min-height: var(--minH);
-  background-color: white;
-  padding: var(--pad1);
+  padding: 20px;
 }
 
-.divCtgs {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--imgG);
+.gracie {
+  display: block;
+  text-align: left;
+  font-size: xx-large;
+  color: #c0c0c0;
 }
 
-.imgCtg {
-  width: var(--imgW);
-  height: var(--imgH);
-}
-
-.btn {
-  background-color: var(--prim);
-  border: none;
-  border-radius: var(--rad1);
-  padding: var(--btnP);
-  cursor: pointer;
-}
-
-.btn.open {
-  background-color: var(--tert);
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;;
 }
 
 .btnReset {
-  width: calc(var(--viuW) * 0.5);
-  margin-top: 20px;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  background-color: var(--prim);
+  border-radius: var(--rad1);
+  opacity: 1;
+  margin-right: 100px;
+}
+
+#btnAdd {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  
+}
+
+.imgAdd {
+  width: 42px;
+  border: none;
+  padding: 3px;
+}
+
+
+.divCtgs {
+  display: grid;
+  gap: 3vw;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 20px;
+}
+
+.imgCtg {
+  width: 15vw;
+}
+
+.btnCtg {
+  background-color: transparent;
+  border: 1px solid var(--secd);
+  border-radius: var(--rad1);
+  cursor: pointer;
+
+}
+
+.btnCtg.open {
+  border: 4px solid var(--tert);
 }
 
 .pnl {
-  display: block;
-  max-height: 390px;
-  overflow-y: scroll;
-  overflow-x: auto;
-  background-color: var(--primT);
-  border-bottom-left-radius: var(--rad1);
-  border-bottom-right-radius: var(--rad1);
-
-  /* Hide scrollbar */
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-/* Hide scrollbar */
-pnl::-webkit-scrollbar {
+
+.pnl::-webkit-scrollbar {
   display: none;
 }
 
 .item-row {
-  width: 50vw;
-  min-height: 50px;
+  min-width: 0;
+  min-height: 56px;
   display: grid;
-  grid-template-columns: 15% 75% 10%;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
   align-items: center;
-  text-align: left;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .item-row:last-child {
   border-bottom: none;
 }
 
-.star-button {
+.prepare-item-row {
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+}
+
+.shopping-item-row {
+  grid-template-columns: minmax(0, 1fr) 42px;
+}
+
+.shopping-item-row .item-name {
+  padding-left: 14px;
+}
+
+.item-row:active {
+  background: rgba(9, 145, 243, 0.12);
+}
+
+.star-button,
+.arrow-button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  justify-self: center;
   border: none;
-  background-color: transparent;
-  color: var(--prim);
-  font-size: large;
+  background: transparent;
   cursor: pointer;
+}
+
+.star-button {
+  color: var(--prim);
+  font-size: 20px;
 }
 
 .item-name {
-  font-size: small;
+  min-width: 0;
+  padding: 0 4px;
+  overflow: hidden;
+  color: #222;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .arrow-button {
-  border: none;
-  background-color: transparent;
   color: var(--prim);
-  font-size: large;
-  cursor: pointer;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.33;
 }
 
-.arrow-button-sel {
-  border: none;
-  background-color: transparent;
-  color: var(--prim);
-  font-size: large;
-  cursor: pointer;
-  display: inline-block;
-  transform: scaleX(-1);
+.arrow-button:active {
+  background: var(--primT);
 }
 
-
-
-
-
-
-
-
-
-
-
-/* Core Layout Container */
-.split-container {
+.lists {
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: min(52vh, 430px);
+  min-height: 260px;
   overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--rad1);
 }
 
-/* Default panel styling */
-.panel {
-  padding: 20px;
-  box-sizing: border-box;
+.list {
+  min-width: 0;
   overflow: auto;
 }
 
-/* Base starting width for the left panel */
-.left-panel {
-  width: 50%; /* JS will override this dynamically */
-  min-width: 10%; /* Prevents dragging completely off-screen */
-  max-width: 90%;
-  background-color: #f4f4f6;
+.list-left {
+  flex: 0 0 60%;
+  background: #f4f4f6;
 }
 
-/* Right panel expands to fill all remaining space */
-.right-panel {
-  flex: 1;
-  background-color: #ffffff;
+.list-right {
+  flex: 1 1 0;
+  background: #fff;
 }
 
-/* The Draggable Handle Line */
+.list-title {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: inherit;
+  color: #555;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.shopping-category {
+  padding: 7px 10px;
+  background: var(--secdT);
+  color: #555;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.list-empty {
+  padding: 24px 12px;
+  color: #777;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: center;
+}
+
 .divider {
-  width: 10px; /* Made slightly thicker for the icon */
-  cursor: ew-resize;
-  background-color: #ccc;
-  transition:
-    background-color 0.2s,
-    width 0.2s;
-  z-index: 10;
   position: relative;
-
-  /* Flex centering setup for the inner icon */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 10;
+  flex: 0 0 6px;
+  cursor: col-resize;
+  background: #c8c8cc;
+  touch-action: none;
 }
 
-/* 1. Large invisible hit-box for easier mobile/finger tapping */
 .divider::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: -12px;
-  right: -12px;
-  height: 100%;
+  inset: 0 -12px;
 }
 
-/* 2. The Visual Indicator (Grabber Icon) */
 .divider::after {
-  content: "⬌"; /* Code for horizontal drag arrows */
-  font-size: 14px;
-  color: #666;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 6px 2px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  pointer-events: none; /* Make sure the mouse ignores the icon itself */
-  transition:
-    transform 0.2s,
-    background-color 0.2s;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 36px;
+  border-radius: 999px;
+  background: #777;
+  box-shadow: -5px 0 #777, 5px 0 #777;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
-/* Active and Hover States */
 .divider:hover,
-.divider:active {
-  background-color: #3498db;
+.divider.dragging {
+  background: var(--prim);
 }
 
-.divider:hover::after,
-.divider:active::after {
-  color: #fff;
-  background-color: #3498db;
-  border-color: #2980b9;
-  transform: scale(1.1); /* Slightly pops out when interacting */
+@media (max-width: 430px) {
+  body {
+    padding: 14px;
+  }
+
+  .prepare-item-row {
+    grid-template-columns: 38px minmax(0, 1fr) 38px;
+  }
+
+  .shopping-item-row {
+    grid-template-columns: minmax(0, 1fr) 38px;
+  }
+
+  .star-button,
+  .arrow-button {
+    width: 34px;
+    height: 34px;
+  }
 }

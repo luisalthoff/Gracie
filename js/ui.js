@@ -1,10 +1,11 @@
 function screenDraw() {
-  const app = elementGet("app");
+  const app = elementGet("divCtgs");
 
   elementClear(app);
 
   //renderFavorites(app);
   showCategories(app);
+  listsDraw();
 }
 
 

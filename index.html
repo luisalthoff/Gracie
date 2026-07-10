@@ -12,13 +12,21 @@
 
   <body>
     <main id="app" class="app">
-      <div id="lists" class="lists">
-        <button onclick="storageReset();" class="btn btnReset">Resetar</button>
-        <div id="prepare" class="ip"></div>
-        <div id="shop" class="shop"></div>
+      <div class="header">
+        <p class="gracie">Gracie</p>
+        <button id="btnAdd" onclick="modalAdd()" class="btnAdd">
+          <img class="imgAdd" src="img/add.png" />
+        </button>
       </div>
+      <div id="divCtgs" class="divCtgs"></div>
+      <div id="lists" class="lists">
+        <div id="prepare" class="list list-left"></div>
+        <div class="divider" id="dragDivider"></div>
+        <div id="shop" class="list list-right"></div>
+      </div>
+      <button onclick="storageReset()" class="btnReset">Limpar</button>
     </main>
-    
+
     <script src="js/config.js"></script>
     <script src="js/database.js"></script>
     <script src="js/storage.js"></script>
@@ -28,5 +36,52 @@
     <script src="js/favorite.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>
+
+    <script>
+      const lists = document.getElementById("lists");
+      const leftPanel = document.getElementById("prepare");
+      const divider = document.getElementById("dragDivider");
+      const savedRatio = Number(storageRead("split-panel-ratio"));
+
+      if (savedRatio >= 0.28 && savedRatio <= 0.72) {
+        leftPanel.style.flexBasis = `${savedRatio * 100}%`;
+      }
+
+      divider.addEventListener("pointerdown", function (event) {
+        event.preventDefault();
+        divider.setPointerCapture(event.pointerId);
+        divider.classList.add("dragging");
+        document.body.style.userSelect = "none";
+      });
+
+      divider.addEventListener("pointermove", function (event) {
+        if (!divider.hasPointerCapture(event.pointerId)) return;
+
+        const bounds = lists.getBoundingClientRect();
+        const dividerWidth = divider.offsetWidth;
+        const availableWidth = bounds.width - dividerWidth;
+        const minPanelWidth = Math.min(130, availableWidth * 0.42);
+        const pointerX = event.clientX - bounds.left;
+        const leftWidth = Math.max(
+          minPanelWidth,
+          Math.min(pointerX, availableWidth - minPanelWidth),
+        );
+        const ratio = leftWidth / availableWidth;
+
+        leftPanel.style.flexBasis = `${ratio * 100}%`;
+        storageWrite("split-panel-ratio", ratio.toFixed(4));
+      });
+
+      function stopDividerDrag(event) {
+        if (divider.hasPointerCapture(event.pointerId)) {
+          divider.releasePointerCapture(event.pointerId);
+        }
+        divider.classList.remove("dragging");
+        document.body.style.userSelect = "";
+      }
+
+      divider.addEventListener("pointerup", stopDividerDrag);
+      divider.addEventListener("pointercancel", stopDividerDrag);
+    </script>
   </body>
 </html>
