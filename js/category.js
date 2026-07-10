@@ -10,7 +10,7 @@ function showCategories(ctgs) {
 
     btn.addEventListener("click", function () {
       categoryToggle(dbCtg.id);
-      showItems(dbCtg);
+      showItems(dbOpenCategoryId);
     });
 
     const imgCtg = document.createElement("img");
@@ -24,6 +24,7 @@ function showCategories(ctgs) {
 }
 
 function showItems(category) {
+  alert(category);
   const container = document.getElementById("prepare");
   container.innerHTML = "";
   container.appendChild(itemPanelCreate(category));

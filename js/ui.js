@@ -1,5 +1,5 @@
 function screenDraw() {
-  const app = elementGet("divCtgs");
+  const app = elementGet("app");
 
   elementClear(app);
 
