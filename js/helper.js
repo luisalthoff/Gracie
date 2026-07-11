@@ -1,7 +1,4 @@
-function elementGet(id)
-{
-    return document.getElementById(id);
-}
+
 
 function elementClear(element)
 {
@@ -20,21 +17,11 @@ function idGenerate()
     return Date.now();
 }
 
-function databaseSortText(a, b)
-{
-    return a.name.localeCompare(b.name);
-}
-
-function databaseSortCategories()
-{
-    db.categories.sort(databaseSortText);
-}
-
-function databaseSortItems()
+function sortItems()
 {
     for (const category of db.categories)
     {
-        category.items.sort(databaseSortText);
+        category.items.sort(sortByName);
     }
 }
 

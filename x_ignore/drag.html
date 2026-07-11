@@ -1,0 +1,104 @@
+<style>
+  html, body {
+  margin: 0;
+  padding: 0;
+  height: 100dvh;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+/* Define the default 50% split globally on the container */
+.split-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  --split-percent: 50%; 
+  user-select: none; /* Prevents text selection while dragging */
+}
+
+.side {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Force inner content to remain stable while outer container shrinks */
+.content {
+  min-width: 100vw;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Left side grabs the dynamic percentage */
+.left-side {
+  background-color: #3498db;
+  width: var(--split-percent);
+}
+
+/* Right side takes whatever remains */
+.right-side {
+  background-color: #2ecc71;
+  width: calc(100% - var(--split-percent));
+}
+
+/* The Draggable Bar */
+.splitter {
+  width: 10px;
+  background-color: #2c3e50;
+  cursor: col-resize; /* Shows the left-right drag cursor */
+  z-index: 10;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+.splitter:hover, 
+.splitter:active {
+  background-color: #e74c3c; /* Highlights when active */
+}
+
+</style>
+
+
+<script>
+const container = document.getElementById('splitWrapper');
+const dragBar = document.getElementById('dragBar');
+let isDragging = false;
+
+function updateSplit(clientX) {
+  const containerRect = container.getBoundingClientRect();
+  let pointerX = clientX - containerRect.left;
+  let percentage = (pointerX / containerRect.width) * 100;
+  if (percentage < 5) percentage = 5;
+  if (percentage > 95) percentage = 95;
+  container.style.setProperty('--split-percent', `${percentage}%`);
+}
+
+const startDrag = (e) => {
+  isDragging = true;
+  document.body.style.cursor = 'col-resize';
+};
+
+dragBar.addEventListener('mousedown', startDrag);
+dragBar.addEventListener('touchstart', startDrag, { passive: true });
+
+const onDrag = (e) => {
+  if (!isDragging) return;
+  
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  updateSplit(clientX);
+};
+
+window.addEventListener('mousemove', onDrag);
+window.addEventListener('touchmove', onDrag, { passive: true });
+
+const stopDrag = () => {
+  if (!isDragging) return;
+  isDragging = false;
+  document.body.style.cursor = '';
+};
+
+window.addEventListener('mouseup', stopDrag);
+window.addEventListener('touchend', stopDrag);
+
+</script>

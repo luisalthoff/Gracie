@@ -22,7 +22,7 @@ function itemPanelCreate(category, selectedState = false) {
 
   const items = category.items
     .filter((item) => item.selected === selectedState)
-    .sort(compareFavoriteThenName);
+    //.sort(compareFavoriteThenName);
 
   if (items.length === 0) {
     panel.appendChild(
@@ -57,11 +57,11 @@ function shoppingPanelCreate() {
     }
   }
 
-  selectedItems.sort(compareFavoriteThenName);
+  //selectedItems.sort(compareFavoriteThenName);
 
   if (selectedItems.length === 0) {
     panel.appendChild(
-      itemEmptyCreate("Selecione ítens à esquerda para preencher a lista de compras"),
+      itemEmptyCreate("Selecione à esquerda"),
     );
     return panel;
   }

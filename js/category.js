@@ -26,15 +26,11 @@ function listsDraw() {
   const prepare = document.getElementById("prepare");
   const shop = document.getElementById("shop");
 
-  prepare.innerHTML = "";
-  shop.innerHTML = "";
+  elementClear(prepare);
+  elementClear(shop);
 
-  prepare.appendChild(listTitleCreate("Lista"));
-  shop.appendChild(listTitleCreate("Compras"));
-
-  const category = db.openCategoryId == null
-    ? null
-    : databaseFindCategory(db.openCategoryId);
+  const category = db.openCategoryId == null ? null : databaseFindCategory(db.openCategoryId);
+  console.log(category);
 
   if (category) {
     prepare.appendChild(itemPanelCreate(category, false));
@@ -43,13 +39,6 @@ function listsDraw() {
   }
 
   shop.appendChild(shoppingPanelCreate());
-}
-
-function listTitleCreate(text) {
-  const title = document.createElement("div");
-  title.className = "list-title";
-  title.textContent = text;
-  return title;
 }
 
 function categoryToggle(categoryId) {

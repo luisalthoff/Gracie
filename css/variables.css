@@ -18,6 +18,18 @@
   --tert: #f8a648;
 
   --primT: #0991f333;
-  --secdT: #969dab33;
+  --secdT: #969dab99;
   --tertT: #f8a64833;
+
+
+  /*VIDRO*/
+  --glass-border: rgba(255, 255, 255, 0.95);
+  --glass-shine: rgba(255, 255, 255, 0.81);
+  --glass-bkd: rgba(0,0,0,0.901); 
+  --glass-bkd1: rgba(0,0,0, 0.0008);
+  --glass-bkd2: rgba(255, 255, 255, 0.8);
+  --glass-bkd: rgba(255, 255, 255, 0.001);
+  --vBlur1: 3px;
+  --vBlur2: 4px;
+
 }

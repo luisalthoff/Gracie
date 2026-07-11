@@ -1,15 +1,4 @@
-/*
 
-const CORES = {
-    p1: [ "#fcf6bd", "#ff99c8", "#d0f4de", "#a9def9", "#e4c1f9", "#D6CCC2" ],
-    p2: [ "#f79256", "#fbd1a2", "#7dcfb6", "#00b2ca", "#1d4e89", "#D6CCC2" ],
-    p3: [ "#d8f3dc", "#b7e4c7", "#95d5b2", "#74c69d", "#52b788", "#40916c", "#2d6a4f", "#1b4332", "#081c15" ],
-    p4: [ "#969dab", "#49aef8", "#4395fd", "#f7b94a", "#f8a648", "#bdc2ca", "#8dcdfa", "#8abdfe", "#fad38e", "#fbc88d"],
-} 
-
-
-const cP = CORES.p4;
-*/
 const cb1 = "#0991f3";
 const cb2 = "#f8a648";
 const cb3 = "#969dab";
@@ -31,6 +20,7 @@ const db = {
         { id: 106, name: "Laranja", favorite: false, selected: false, cost: 0 },
       ],
     },
+
     {
       id: 2,
       name: "Açougue",
@@ -43,6 +33,7 @@ const db = {
         { id: 203, name: "Atum em Lata", favorite: true, selected: false, cost: 0 },
       ],
     },
+
     {
       id: 3,
       name: "Frios & Laticínios",
@@ -51,7 +42,7 @@ const db = {
       position: 3,
       items: [
         { id: 301, name: "Leite Ninho", favorite: false, selected: true },
-        { id: 302, name: "Queijo", favorite: true, selected: false, cost: 0 },
+        { id: 302, name: "Mussarela", favorite: true, selected: false, cost: 0 },
         { id: 303, name: "Iogurte", favorite: false, selected: false, cost: 0 },
         { id: 304, name: "Manteiga", favorite: false, selected: false, cost: 0 },
         { id: 305, name: "Requeijão", favorite: false, selected: false, cost: 0 },
@@ -60,6 +51,11 @@ const db = {
         { id: 308, name: "Salsicha", favorite: false, selected: false, cost: 0 },
         { id: 309, name: "Salame", favorite: false, selected: false, cost: 0 },
         { id: 310, name: "Lombinho", favorite: false, selected: false, cost: 0 },
+        { id: 312, name: "Linguiça Blumenau", favorite: true, selected: false, cost: 0 },
+        { id: 313, name: "Linguiça Calabresa", favorite: true, selected: false, cost: 0 },
+        { id: 314, name: "Prosciutto", favorite: true, selected: false, cost: 0 },
+        { id: 315, name: "Creme de Leite", favorite: true, selected: false, cost: 0 },
+
         {
           id: 311,
           name: "Camarão Congelado",
@@ -103,6 +99,7 @@ const db = {
         { id: 505, name: "Fermento Químico", favorite: true, selected: false, cost: 0 },
       ],
     },
+
     {
       id: 6,
       name: "Bebidas",
@@ -119,6 +116,7 @@ const db = {
         { id: 607, name: "Vinho", favorite: true, selected: false, cost: 0 },
       ],
     },
+    
     {
       id: 7,
       name: "Higiene",
@@ -129,6 +127,7 @@ const db = {
         { id: 701, name: "Escova de Dentes", favorite: false, selected: false, cost: 0 },
       ],
     },
+
     {
       id: 8,
       name: "Limpeza",
@@ -136,7 +135,8 @@ const db = {
       color: cb3,
       position: 8,
       items: [
-        { id: 801, name: "Omo", favorite: false, selected: false, cost: 0 },
+        { id: 801, name: "Omo",      favorite: false, selected: false, cost: 0 },
+        { id: 802, name: "Parmesão", favorite: false, selected: false, cost: 0 },
       ],
     },
   ],
@@ -181,90 +181,5 @@ function databaseValidate()
     if (!db.categories)
     {
         db.categories = [];
-    }
-}
-
-function databaseFindFavoriteItems()
-{
-    const favorites = [];
-
-    for (const category of db.categories)
-    {
-        for (const item of category.items)
-        {
-            if (item.favorite)
-            {
-                favorites.push(
-                {
-                    ...item,
-                    categoryName: category.name
-                });
-            }
-        }
-    }
-
-    favorites.sort(function(a, b)
-    {
-        const categoryCompare = a.categoryName.localeCompare(b.categoryName);
-
-        if (categoryCompare !== 0)
-        {
-            return categoryCompare;
-        }
-
-        return a.name.localeCompare(b.name);
-    });
-
-    return favorites;
-}
-
-function databaseFindFavoriteGroups()
-{
-    const groups = [];
-
-    for (const category of db.categories)
-    {
-        const favoriteItems = [];
-
-        for (const item of category.items)
-        {
-            if (item.favorite)
-            {
-                favoriteItems.push(item);
-            }
-        }
-
-        if (favoriteItems.length > 0)
-        {
-            favoriteItems.sort(databaseSortText);
-
-            groups.push(
-            {
-                categoryId: category.id,
-                categoryName: category.name,
-                icon: category.icon,
-                items: favoriteItems
-            });
-        }
-    }
-
-    groups.sort(function(a, b)
-    {
-        return a.categoryName.localeCompare(b.categoryName);
-    });
-
-    return groups;
-}
-
-function databaseSortCategories()
-{
-    db.categories.sort(sortByOrder);
-}
-
-function databaseSortItems()
-{
-    for (const category of db.categories)
-    {
-        category.items.sort(sortByName);
     }
 }

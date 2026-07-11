@@ -8,23 +8,26 @@
 
     <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/style.css" />
+
   </head>
 
   <body>
     <main id="app" class="app">
       <div class="header">
-        <p class="gracie">Gracie</p>
-        <button id="btnAdd" onclick="modalAdd()" class="btnAdd">
+        <p class="titulo">Gracie</p>
+        <button id="btnAdd" onclick="storageReset()" class="btnAdd">
           <img class="imgAdd" src="img/add.png" />
         </button>
       </div>
       <div id="divCtgs" class="divCtgs"></div>
-      <div id="lists" class="lists">
-        <div id="prepare" class="list list-left"></div>
+      <div class="lists" id="lists">
+        <div id="prepare" class="side prepare"> </div>
         <div class="divider" id="dragDivider"></div>
-        <div id="shop" class="list list-right"></div>
+        <div id="shop" class="side shop"></div>
       </div>
-      <button onclick="storageReset()" class="btnReset">Limpar</button>
+     
+      <!-- button onclick="storageReset()" class="btnReset">Limpar</button -->
+      
     </main>
 
     <script src="js/config.js"></script>
@@ -33,55 +36,51 @@
     <script src="js/helper.js"></script>
     <script src="js/item.js"></script>
     <script src="js/category.js"></script>
-    <script src="js/favorite.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>
 
     <script>
-      const lists = document.getElementById("lists");
-      const leftPanel = document.getElementById("prepare");
-      const divider = document.getElementById("dragDivider");
-      const savedRatio = Number(storageRead("split-panel-ratio"));
+      const container = document.getElementById('lists');
+      const dragDivider = document.getElementById('dragDivider');
+      let isDragging = false;
 
-      if (savedRatio >= 0.28 && savedRatio <= 0.72) {
-        leftPanel.style.flexBasis = `${savedRatio * 100}%`;
+      function updateSplit(clientX) {
+        const containerRect = container.getBoundingClientRect();
+        let pointerX = clientX - containerRect.left;
+        let percentage = (pointerX / containerRect.width) * 100;
+        if (percentage < 5) percentage = 5;
+        if (percentage > 95) percentage = 95;
+        container.style.setProperty('--split-percent', `${percentage}%`);
       }
 
-      divider.addEventListener("pointerdown", function (event) {
-        event.preventDefault();
-        divider.setPointerCapture(event.pointerId);
-        divider.classList.add("dragging");
-        document.body.style.userSelect = "none";
-      });
+      const startDrag = (e) => {
+        isDragging = true;
+        document.body.style.cursor = 'col-resize';
+      };
 
-      divider.addEventListener("pointermove", function (event) {
-        if (!divider.hasPointerCapture(event.pointerId)) return;
+      dragDivider.addEventListener('mousedown', startDrag);
+      dragDivider.addEventListener('touchstart', startDrag, { passive: true });
 
-        const bounds = lists.getBoundingClientRect();
-        const dividerWidth = divider.offsetWidth;
-        const availableWidth = bounds.width - dividerWidth;
-        const minPanelWidth = Math.min(130, availableWidth * 0.42);
-        const pointerX = event.clientX - bounds.left;
-        const leftWidth = Math.max(
-          minPanelWidth,
-          Math.min(pointerX, availableWidth - minPanelWidth),
-        );
-        const ratio = leftWidth / availableWidth;
+      const onDrag = (e) => {
+        if (!isDragging) return;
+        
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        updateSplit(clientX);
+      };
 
-        leftPanel.style.flexBasis = `${ratio * 100}%`;
-        storageWrite("split-panel-ratio", ratio.toFixed(4));
-      });
+      window.addEventListener('mousemove', onDrag);
+      window.addEventListener('touchmove', onDrag, { passive: true });
 
-      function stopDividerDrag(event) {
-        if (divider.hasPointerCapture(event.pointerId)) {
-          divider.releasePointerCapture(event.pointerId);
-        }
-        divider.classList.remove("dragging");
-        document.body.style.userSelect = "";
-      }
+      const stopDrag = () => {
+        if (!isDragging) return;
+        isDragging = false;
+        document.body.style.cursor = '';
+      };
 
-      divider.addEventListener("pointerup", stopDividerDrag);
-      divider.addEventListener("pointercancel", stopDividerDrag);
-    </script>
+      window.addEventListener('mouseup', stopDrag);
+      window.addEventListener('touchend', stopDrag);
+      
+      
+     </script>
   </body>
 </html>
