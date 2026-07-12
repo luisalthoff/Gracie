@@ -8,7 +8,7 @@ const db = {
     {
       id: 1,
       name: "Hortifruti",
-      icon: "img/banana.png",
+      icon: "img/1.png",
       color: cb1,
       position: 1,
       items: [

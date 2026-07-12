@@ -130,13 +130,14 @@ html, body {
 
 .imgCtg {
   width: 15vw;
+  border-radius: 50%;
 }
 
 .btnCtg {
   background-color: transparent;
   color: rgba(255, 255, 255, 0.4);
   box-shadow: 2px 2px 5px rgba(255, 255, 255, 1);
-  border: 1px solid rgba(0, 0, 0, 0.9);
+  border: none;
   border-radius: var(--rad1);
   cursor: pointer;
 

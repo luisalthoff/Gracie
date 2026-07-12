@@ -30,7 +30,6 @@ function listsDraw() {
   elementClear(shop);
 
   const category = db.openCategoryId == null ? null : databaseFindCategory(db.openCategoryId);
-  console.log(category);
 
   if (category) {
     prepare.appendChild(itemPanelCreate(category, false));
