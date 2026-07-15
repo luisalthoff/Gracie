@@ -176,6 +176,16 @@
     .btn-dialog.cancel { background: #94a3b8; color: white; }
 
 */
-    .divider { width: var(--divider-width); background: #96A594; cursor: col-resize; position: relative; transition: background 0.2s; z-index: 5; }
+    .divider 
+    { 
+      width: var(--divider-width); 
+      background: #96A594; 
+      cursor: pointer; 
+      touch-action: none;
+      position: relative; 
+      transition: background 0.2s; 
+      z-index: 5; 
+    }
+
     .divider::after { content: "⋮"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffffff; font-weight: 800; font-size: xx-large; }
     

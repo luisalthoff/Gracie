@@ -230,10 +230,26 @@ addItemForm.addEventListener('submit', (e) => {
 // Drag Split Screen - Modified boundary snap limits from 10% to 90%
 const leftPanel = document.getElementById('left-panel');
 const divider = document.getElementById('split-divider');
+
 const container = document.getElementById('list-container');
 let isDragging = false;
 
-divider.addEventListener('mousedown', () => { isDragging = true; divider.classList.add('dragging'); document.body.style.cursor = 'col-resize'; });
+// Add both 'click' and 'touchstart'
+divider.addEventListener('mousedown', startDrag);
+divider.addEventListener('touchstart', startDrag, { passive: false });
+
+// Also add listeners for moving and ending
+window.addEventListener('mousemove', drag);
+window.addEventListener('touchmove', drag, { passive: false });
+
+window.addEventListener('mouseup', stopDrag);
+window.addEventListener('touchend', stopDrag);
+
+
+
+//divider.addEventListener('mousedown', () => { isDragging = true; divider.classList.add('dragging'); document.body.style.cursor = 'col-resize'; });
+//divider.addEventListener('touchstart', startDrag, { passive: false });
+
 document.addEventListener('mousemove', (e) => {
   if (!isDragging) return;
   const rect = container.getBoundingClientRect();
