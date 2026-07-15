@@ -12,76 +12,49 @@
 
   </head>
 
-  <body>
-    <main id="app" class="app">
-      <div class="header">
-        <p class="titulo">Gracie</p>
-        <button id="btnAdd" onclick="storageReset()" class="btnAdd">
-          <img class="imgAdd" src="img/add.png" />
-        </button>
+  <body background="img/bkd.png">
+    <div class="categories-container" id="categories-container">
+
+    </div>
+    
+    <div class="opcoes">
+      <label><input type="checkbox" id="sort-toggle"> (A-Z)</label>
+      <h id="ctgTitle"></h>
+      <button id="btn-add" class="btn-add">
+        <img src="img/add.svg" />
+      </button>
+    </div>
+
+    <div class="list-container" id="list-container">
+      <div class="panel" id="left-panel">
+        <div class="items-grid" id="left-items-grid">
+          <div class="empty-state">Clique em um ícone acima para ver os favoritos.</div>
+        </div>
       </div>
-      <div id="divCtgs" class="divCtgs"></div>
-      <div class="lists" id="lists">
-        <div id="prepare" class="side prepare"> </div>
-        <div class="divider" id="dragDivider"></div>
-        <div id="shop" class="side shop"></div>
+      <div class="divider" id="split-divider"></div>
+      <div class="panel" id="right-panel">
+        <div class="items-grid" id="right-items-grid"></div>
       </div>
-     
-      <!-- button onclick="storageReset()" class="btnReset">Limpar</button -->
-      
-    </main>
+    </div>
+    
+    <dialog id="item-modal">
+      <h3>Novo Item de Catálogo</h3>
+      <form id="add-item-form">
+        <div class="form-group">
+          <label for="input-item-name">Nome do Item</label>
+          <input type="text" id="input-item-name" required placeholder="Ex: Queijo Prato, Açúcar">
+        </div>
+        <div class="form-group">
+          <label for="select-category">Categoria do Sistema</label>
+          <select id="select-category" required></select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="btn-close-modal" class="btn-dialog cancel">Cancelar</button>
+          <button type="submit" class="btn-dialog save">Adicionar</button>
+        </div>
+      </form>
+    </dialog>
+    <script src="app.js"></script>
 
-    <script src="js/config.js"></script>
-    <script src="js/database.js"></script>
-    <script src="js/storage.js"></script>
-    <script src="js/helper.js"></script>
-    <script src="js/item.js"></script>
-    <script src="js/category.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/app.js"></script>
-
-    <script>
-      const container = document.getElementById('lists');
-      const dragDivider = document.getElementById('dragDivider');
-      let isDragging = false;
-
-      function updateSplit(clientX) {
-        const containerRect = container.getBoundingClientRect();
-        let pointerX = clientX - containerRect.left;
-        let percentage = (pointerX / containerRect.width) * 100;
-        if (percentage < 5) percentage = 5;
-        if (percentage > 95) percentage = 95;
-        container.style.setProperty('--split-percent', `${percentage}%`);
-      }
-
-      const startDrag = (e) => {
-        isDragging = true;
-        document.body.style.cursor = 'col-resize';
-      };
-
-      dragDivider.addEventListener('mousedown', startDrag);
-      dragDivider.addEventListener('touchstart', startDrag, { passive: true });
-
-      const onDrag = (e) => {
-        if (!isDragging) return;
-        
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        updateSplit(clientX);
-      };
-
-      window.addEventListener('mousemove', onDrag);
-      window.addEventListener('touchmove', onDrag, { passive: true });
-
-      const stopDrag = () => {
-        if (!isDragging) return;
-        isDragging = false;
-        document.body.style.cursor = '';
-      };
-
-      window.addEventListener('mouseup', stopDrag);
-      window.addEventListener('touchend', stopDrag);
-      
-      
-     </script>
   </body>
 </html>

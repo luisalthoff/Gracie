@@ -1,185 +1,145 @@
+// ==========================================
+// SQL-STYLE JSON DATABASE ENGINE
+// ==========================================
+class SQLJSONDatabase {
+  constructor(dbName) {
+    this.dbName = dbName;
+    if (!localStorage.getItem(this.dbName)) {
+      this._saveRaw({});
+    }
+  }
 
-const cb1 = "#0991f3";
-const cb2 = "#f8a648";
-const cb3 = "#969dab";
+  _saveRaw(data) {
+    localStorage.setItem(this.dbName, JSON.stringify(data));
+  }
 
-const db = {
-  categories: [
-    {
-      id: 1,
-      name: "Hortifruti",
-      icon: "img/1.png",
-      color: cb1,
-      position: 1,
-      items: [
-        { id: 101, name: "Banana", favorite: false, selected: false, cost: 0 },
-        { id: 102, name: "Maçã", favorite: true, selected: false, cost: 0 },
-        { id: 103, name: "Cenoura", favorite: false, selected: false, cost: 0 },
-        { id: 104, name: "Alface", favorite: false, selected: false, cost: 0 },
-        { id: 105, name: "Tomate", favorite: true, selected: false, cost: 0 },
-        { id: 106, name: "Laranja", favorite: false, selected: false, cost: 0 },
-      ],
-    },
+  _readRaw() {
+    return JSON.parse(localStorage.getItem(this.dbName) || '{}');
+  }
 
-    {
-      id: 2,
-      name: "Açougue",
-      icon: "img/carne.png",
-      color: cb2,
-      position: 2,
-      items: [
-        { id: 201, name: "Carne Moída", favorite: false, selected: false, cost: 0 },
-        { id: 202, name: "Frango Congelado", favorite: false, selected: false, cost: 0 },
-        { id: 203, name: "Atum em Lata", favorite: true, selected: false, cost: 0 },
-      ],
-    },
+  insertInto(table, record) {
+    const db = this._readRaw();
+    if (!db[table]) db[table] = [];
 
-    {
-      id: 3,
-      name: "Frios & Laticínios",
-      icon: "img/queijo.png",
-      color: cb3,
-      position: 3,
-      items: [
-        { id: 301, name: "Leite Ninho", favorite: false, selected: true },
-        { id: 302, name: "Mussarela", favorite: true, selected: false, cost: 0 },
-        { id: 303, name: "Iogurte", favorite: false, selected: false, cost: 0 },
-        { id: 304, name: "Manteiga", favorite: false, selected: false, cost: 0 },
-        { id: 305, name: "Requeijão", favorite: false, selected: false, cost: 0 },
-        { id: 306, name: "Presunto", favorite: false, selected: false, cost: 0 },
-        { id: 307, name: "Bacon", favorite: false, selected: false, cost: 0 },
-        { id: 308, name: "Salsicha", favorite: false, selected: false, cost: 0 },
-        { id: 309, name: "Salame", favorite: false, selected: false, cost: 0 },
-        { id: 310, name: "Lombinho", favorite: false, selected: false, cost: 0 },
-        { id: 312, name: "Linguiça Blumenau", favorite: true, selected: false, cost: 0 },
-        { id: 313, name: "Linguiça Calabresa", favorite: true, selected: false, cost: 0 },
-        { id: 314, name: "Prosciutto", favorite: true, selected: false, cost: 0 },
-        { id: 315, name: "Creme de Leite", favorite: true, selected: false, cost: 0 },
-
-        {
-          id: 311,
-          name: "Camarão Congelado",
-          favorite: false,
-          selected: false,
-        },
-      ],
-    },
-
-    {
-      id: 4,
-      name: "Produtos Básicos",
-      icon: "img/arroz.png",
-      color: cb3,
-      position: 4,
-      items: [
-        { id: 401, name: "Arroz", favorite: false, selected: false, cost: 0 },
-        { id: 402, name: "Feijão", favorite: false, selected: false, cost: 0 },
-        { id: 403, name: "Farinha", favorite: true, selected: false, cost: 0 },
-        { id: 404, name: "Amendoim", favorite: true, selected: false, cost: 0 },
-        { id: 405, name: "Milho", favorite: true, selected: false, cost: 0 },
-      ],
-    },
-
-    {
-      id: 5,
-      name: "Padaria",
-      icon: "img/pao.png",
-      color: cb3,
-      position: 5,
-      items: [
-        { id: 501, name: "Pão da Márcia", favorite: false, selected: false, cost: 0 },
-        { id: 502, name: "Granola", favorite: false, selected: false, cost: 0 },
-        { id: 503, name: "Pão de Queijo", favorite: true, selected: false, cost: 0 },
-        {
-          id: 504,
-          name: "Fermento Biológico",
-          favorite: true,
-          selected: false,
-        },
-        { id: 505, name: "Fermento Químico", favorite: true, selected: false, cost: 0 },
-      ],
-    },
-
-    {
-      id: 6,
-      name: "Bebidas",
-      icon: "img/bebida.png",
-      color: cb3,
-      position: 6,
-      items: [
-        { id: 601, name: "Água", favorite: false, selected: false, cost: 0 },
-        { id: 602, name: "Suco", favorite: false, selected: false, cost: 0 },
-        { id: 603, name: "Café", favorite: true, selected: false, cost: 0 },
-        { id: 604, name: "Coca Zero", favorite: true, selected: false, cost: 0 },
-        { id: 605, name: "Absolut", favorite: true, selected: false, cost: 0 },
-        { id: 606, name: "Cerveja", favorite: true, selected: false, cost: 0 },
-        { id: 607, name: "Vinho", favorite: true, selected: false, cost: 0 },
-      ],
-    },
+    const nextId = db[table].length > 0 ? Math.max(...db[table].map(r => r.id || 0)) + 1 : 1;
+    const newRecord = { id: nextId, ...record };
     
-    {
-      id: 7,
-      name: "Higiene",
-      icon: "img/ph.png",
-      color: cb3,
-      position: 7,
-      items: [
-        { id: 701, name: "Escova de Dentes", favorite: false, selected: false, cost: 0 },
-      ],
-    },
+    db[table].push(newRecord);
+    this._saveRaw(db);
+    return newRecord;
+  }
 
-    {
-      id: 8,
-      name: "Limpeza",
-      icon: "img/esponja.png",
-      color: cb3,
-      position: 8,
-      items: [
-        { id: 801, name: "Omo",      favorite: false, selected: false, cost: 0 },
-        { id: 802, name: "Parmesão", favorite: false, selected: false, cost: 0 },
-      ],
-    },
-  ],
-};
+  select(table, columns = '*', whereFn = () => true) {
+    const db = this._readRaw();
+    const records = db[table] || [];
+    const filtered = records.filter(whereFn);
+    
+    if (columns === '*') return filtered;
+    
+    return filtered.map(record => {
+      const projected = {};
+      columns.forEach(col => {
+        if (record.hasOwnProperty(col)) projected[col] = record[col];
+      });
+      return projected;
+    });
+  }
 
+  deleteFrom(table, whereFn) {
+    const db = this._readRaw();
+    if (!db[table]) return 0;
 
-// ============== DB FUNCTIONS ==================//
+    const initialLength = db[table].length;
+    db[table] = db[table].filter(record => !whereFn(record));
+    
+    const affectedRows = initialLength - db[table].length;
+    if (affectedRows > 0) this._saveRaw(db);
+    return affectedRows;
+  }
 
-function databaseFindCategory(categoryId)
-{
-    for (const category of db.categories)
-    {
-        if (category.id === categoryId)
-        {
-            return category;
-        }
-    }
-
-    console.error("Category not found:", categoryId);
-    return null;
+  dropDatabase() {
+    this._saveRaw({});
+  }
 }
 
-function databaseFindItem(itemId)
-{
-    for (const category of db.categories)
-    {
-        for (const item of category.items)
-        {
-            if (item.id === itemId)
-            {
-                return item;
-            }
-        }
-    }
+// ==========================================
+// UI CONTROLLER & EVENT INITIALIZATION
+// ==========================================
+const db = new SQLJSONDatabase('modal_double_click_db');
 
-    console.error("Item not found:", itemId);
-    return null;
+const tableBody = document.getElementById('table-body');
+const statusBanner = document.getElementById('status-banner');
+const userModal = document.getElementById('user-modal');
+const addUserForm = document.getElementById('add-user-form');
+
+let currentFilter = () => true;
+
+function refreshView(systemMessage) {
+  const records = db.select('users', '*', currentFilter);
+  statusBanner.textContent = systemMessage;
+  tableBody.innerHTML = ''; 
+
+  if (records.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="3" class="empty-state">No users found matching this view.</td></tr>`;
+    return;
+  }
+
+  records.forEach(user => {
+    const row = document.createElement('tr');
+    row.setAttribute('data-id', user.id); 
+    
+    const roleClass = user.role === 'Admin' ? 'badge-admin' : 'badge-user';
+    
+    row.innerHTML = `
+      <td><strong>#${user.id}</strong></td>
+      <td>${user.name}</td>
+      <td><span class="badge ${roleClass}">${user.role}</span></td>
+    `;
+    tableBody.appendChild(row);
+  });
 }
 
-function databaseValidate()
+// --- MODAL INSERT NEW ITEM ---
+document.getElementById('btn-add').addEventListener('click', () => {userModal.showModal(); });
+const closeModal = () => {userModal.close(); addUserForm.reset();};
+document.getElementById('btn-close-modal').addEventListener('click', closeModal);
+
+addUserForm.addEventListener('submit', (event) =>
 {
-    if (!db.categories)
-    {
-        db.categories = [];
-    }
-}
+  event.preventDefault();   
+  const nameInput = document.getElementById('input-name').value;
+  const roleInput = document.getElementById('select-role').value;
+  db.insertInto('users', { name: nameInput, role: roleInput });
+  closeModal();
+  refreshView(`adicionado com sucesso ('${nameInput}', '${roleInput}')`);
+});
+
+// --- ROW DOUBLE CLICK TO DELETE LISTENER ---
+tableBody.addEventListener('dblclick', (event) => {
+  const targetRow = event.target.closest('tr');
+  if (!targetRow || !targetRow.hasAttribute('data-id')) return;
+  
+  const targetId = parseInt(targetRow.getAttribute('data-id'), 10);
+  const affectedRows = db.deleteFrom('users', row => row.id === targetId);
+  
+  refreshView(`Successfully executed: DELETE FROM users WHERE id = ${targetId}`);
+});
+
+// --- FILTER CONTROL ACTIONS ---
+document.getElementById('btn-select-all').addEventListener('click', () => {
+  currentFilter = () => true;
+  refreshView("Displaying complete directory");
+});
+
+document.getElementById('btn-select-admins').addEventListener('click', () => {
+  currentFilter = row => row.role === 'Admin';
+  refreshView("Filtered view: System administrators only.");
+});
+
+document.getElementById('btn-clear').addEventListener('click', () => {
+  db.dropDatabase();
+  refreshView("Database cleared.");
+});
+
+// Initial load view invocation
+refreshView("System Ready");
