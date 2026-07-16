@@ -230,25 +230,13 @@ addItemForm.addEventListener('submit', (e) => {
 // Drag Split Screen - Modified boundary snap limits from 10% to 90%
 const leftPanel = document.getElementById('left-panel');
 const divider = document.getElementById('split-divider');
-
 const container = document.getElementById('list-container');
 let isDragging = false;
 
-// Add both 'click' and 'touchstart'
-divider.addEventListener('mousedown', startDrag);
-divider.addEventListener('touchstart', startDrag, { passive: false });
 
-// Also add listeners for moving and ending
-window.addEventListener('mousemove', drag);
-window.addEventListener('touchmove', drag, { passive: false });
+divider.addEventListener('mousedown', () => { isDragging = true; divider.classList.add('dragging'); document.body.style.cursor = 'col-resize'; });
+divider.addEventListener('touchstart', () => { isDragging = true; divider.classList.add('dragging'); document.body.style.cursor = 'col-resize'; });
 
-window.addEventListener('mouseup', stopDrag);
-window.addEventListener('touchend', stopDrag);
-
-
-
-//divider.addEventListener('mousedown', () => { isDragging = true; divider.classList.add('dragging'); document.body.style.cursor = 'col-resize'; });
-//divider.addEventListener('touchstart', startDrag, { passive: false });
 
 document.addEventListener('mousemove', (e) => {
   if (!isDragging) return;
@@ -258,6 +246,8 @@ document.addEventListener('mousemove', (e) => {
   if (pct > 90) pct = 90;
   leftPanel.style.width = `${pct}%`;
 });
+
+//COLOCAR TOUCHMOVE E TOUCHEND
 document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; divider.classList.remove('dragging'); document.body.style.cursor = 'default'; } });
 
 sortToggle.addEventListener('change', renderRightPanel);
