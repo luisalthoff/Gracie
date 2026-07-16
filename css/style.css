@@ -47,7 +47,7 @@
     .category-btn.active 
     { 
       border-color: #475569; 
-      box-shadow: px 2px 14px rgba(250,250,250,1),
+      box-shadow: 0px 2px 14px rgba(250,250,250,1),
       -4px -4px 14px rgba(250,250,250,1); ; 
     }
     
@@ -144,18 +144,19 @@
 
     #right-panel 
     { 
-      flex: 1; 
+      flex: 50%; 
       min-width: 0px; 
     }
 
-    .item-card 
-    {
+    .item-card {
       display: flex; 
       align-items: center; 
       padding: 14px;
       border-radius: 10px; 
       cursor: pointer; 
       color: white;
+      /* iOS Fix: Explicitly declare block behavior inside flex grids */
+      -webkit-transform: translateZ(0); 
     }
     
     .item-left-content { display: flex; align-items: center; gap: 10px; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -181,10 +182,12 @@
       width: var(--divider-width); 
       background: #96A594; 
       cursor: pointer; 
-      touch-action: none;
+      touch-action: pan-y; /* Changed from none to allow iOS to register pointer movements */
       position: relative; 
       transition: background 0.2s; 
       z-index: 5; 
+      -webkit-user-select: none; /* Prevents text selection while dragging on iPhone */
+      user-select: none;
     }
 
     .divider::after { content: "⋮"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffffff; font-weight: 800; font-size: xx-large; }

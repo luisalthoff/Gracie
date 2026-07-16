@@ -228,27 +228,55 @@ addItemForm.addEventListener('submit', (e) => {
 });
 
 // Drag Split Screen - Modified boundary snap limits from 10% to 90%
+// Drag Split Screen - Fully Compatible with Desktop Mouse and iPhone Touch
 const leftPanel = document.getElementById('left-panel');
 const divider = document.getElementById('split-divider');
 const container = document.getElementById('list-container');
 let isDragging = false;
 
+// 1. Listen for standard pointer initialization (handles mousedown and touchstart)
+divider.addEventListener('pointerdown', (e) => { 
+  isDragging = true; 
+  divider.classList.add('dragging'); 
+  document.body.style.cursor = 'col-resize';
+  
+  // Prevents text selection ghosting on iOS safari
+  e.preventDefault(); 
+});
 
-divider.addEventListener('mousedown', () => { isDragging = true; divider.classList.add('dragging'); document.body.style.cursor = 'col-resize'; });
-divider.addEventListener('touchstart', () => { isDragging = true; divider.classList.add('dragging'); document.body.style.cursor = 'col-resize'; });
-
-
-document.addEventListener('mousemove', (e) => {
+// 2. Track movements seamlessly across touch and mouse events
+document.addEventListener('pointermove', (e) => {
   if (!isDragging) return;
+  
   const rect = container.getBoundingClientRect();
+  
+  // Unified pointer tracking calculation
   let pct = ((e.clientX - rect.left) / rect.width) * 100;
+  
+  // Boundary snap limits
   if (pct < 10) pct = 10;
   if (pct > 90) pct = 90;
+  
   leftPanel.style.width = `${pct}%`;
 });
 
-//COLOCAR TOUCHMOVE E TOUCHEND
-document.addEventListener('mouseup', () => { if (isDragging) { isDragging = false; divider.classList.remove('dragging'); document.body.style.cursor = 'default'; } });
+// 3. Reset state on drag termination
+document.addEventListener('pointerup', () => { 
+  if (isDragging) { 
+    isDragging = false; 
+    divider.classList.remove('dragging'); 
+    document.body.style.cursor = 'default'; 
+  } 
+});
+
+// Safety fallbacks to ensure dragging releases if cursor departs the screen window
+document.addEventListener('pointercancel', () => {
+  if (isDragging) {
+    isDragging = false;
+    divider.classList.remove('dragging');
+    document.body.style.cursor = 'default';
+  }
+});
 
 sortToggle.addEventListener('change', renderRightPanel);
 initCategories();
