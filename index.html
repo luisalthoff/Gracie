@@ -1,60 +1,141 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0b0f19">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#6d886a" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <title>Gracie</title>
 
-    <link rel="stylesheet" href="css/variables.css" />
     <link rel="stylesheet" href="css/style.css" />
-
   </head>
 
-  <body background="img/bkd.png">
-    <div class="categories-container" id="categories-container">
+  <body>
+    <main class="app-shell">
+      <section
+        class="categories-container"
+        id="categories-container"
+        aria-label="Categorias"
+      ></section>
 
-    </div>
-    
-    <div class="opcoes">
-      <label><input type="checkbox" id="sort-toggle"> (A-Z)</label>
-      <h id="ctgTitle"></h>
-      <button id="btn-add" class="btn-add">
-        <img src="img/add.svg" />
-      </button>
-    </div>
+      <section class="options-bar">
+        <fieldset class="sort-options">
+          <legend>Ordenar</legend>
 
-    <div class="list-container" id="list-container">
-      <div class="panel" id="left-panel">
-        <div class="items-grid" id="left-items-grid">
-          <div class="empty-state">Clique em um ícone acima para ver os favoritos.</div>
+          <label>
+            <input
+              type="radio"
+              name="sort-mode"
+              value="category"
+              checked
+            />
+            Categoria
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="sort-mode"
+              value="alphabetical"
+            />
+            A–Z
+          </label>
+
+          <label>
+            <input
+              type="radio"
+              name="sort-mode"
+              value="favorites"
+            />
+            Favoritos
+          </label>
+        </fieldset>
+
+        <h1 id="ctgTitle" class="category-title"></h1>
+
+        <button
+          id="btn-add"
+          class="icon-button add-button"
+          type="button"
+          aria-label="Adicionar item"
+        >
+          <img src="img/add2.svg" alt="" />
+        </button>
+      </section>
+
+      <section class="tab-container">
+        <nav class="tab-header" aria-label="Listas">
+          <button
+            class="tab-btn active"
+            type="button"
+            data-panel="left-panel"
+            aria-selected="true"
+          >
+            Lista
+          </button>
+
+          <button
+            class="tab-btn"
+            type="button"
+            data-panel="right-panel"
+            aria-selected="false"
+          >
+            Compras
+          </button>
+        </nav>
+
+        <div class="panel active" id="left-panel">
+          <div class="items-grid" id="left-items-grid"></div>
         </div>
-      </div>
-      <div class="divider" id="split-divider"></div>
-      <div class="panel" id="right-panel">
-        <div class="items-grid" id="right-items-grid"></div>
-      </div>
-    </div>
-    
+
+        <div class="panel" id="right-panel" hidden>
+          <div class="items-grid" id="right-items-grid"></div>
+        </div>
+      </section>
+    </main>
+
     <dialog id="item-modal">
-      <h3>Novo Item de Catálogo</h3>
+      <h2>Novo item</h2>
+
       <form id="add-item-form">
         <div class="form-group">
-          <label for="input-item-name">Nome do Item</label>
-          <input type="text" id="input-item-name" required placeholder="Ex: Queijo Prato, Açúcar">
+          <label for="input-item-name">Nome do item</label>
+          <input
+            type="text"
+            id="input-item-name"
+            required
+            autocomplete="off"
+            placeholder="Ex.: Queijo prato"
+          />
         </div>
+
         <div class="form-group">
-          <label for="select-category">Categoria do Sistema</label>
+          <label for="select-category">Categoria</label>
           <select id="select-category" required></select>
         </div>
+
         <div class="modal-actions">
-          <button type="button" id="btn-close-modal" class="btn-dialog cancel">Cancelar</button>
-          <button type="submit" class="btn-dialog save">Adicionar</button>
+          <button
+            type="button"
+            id="btn-close-modal"
+            class="dialog-button cancel"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" class="dialog-button save">
+            Adicionar
+          </button>
         </div>
       </form>
     </dialog>
-    <script src="app.js"></script>
 
+    <script src="app.js"></script>
   </body>
 </html>

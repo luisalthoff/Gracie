@@ -32,4 +32,11 @@
   --vBlur1: 3px;
   --vBlur2: 4px;
 
+  --corBtnAct: #5C7ddA; 
+  --corBtnActE: #282a3d;
+  --corBkdCtg: #BE9171;
+  --corBkdCtgE: #894B2F;
+  --corBtnCtg: #696969;
+  --corBtnCtgE: #888888;
+
 }

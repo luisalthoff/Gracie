@@ -4,5 +4,5 @@
     "target": "es6",
     "checkJs": false
   },
-  "exclude": ["muds", "node_modules", "**/node_modules/*"]
+  "exclude": ["puxi.sh", ".ignore/", "node_modules", "**/node_modules/*"]
 }

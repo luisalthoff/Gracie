@@ -1,289 +1,630 @@
-// Unique SVG paths customized for each distinct category structure
-const colors = [ "", "#A3B5B2", "#B67F64", "#AAAC8C", "#D3BC99", "#3D4E5E", "#AA9CA4", "#BD924F", "#9C8A74", "#8F5233", "#5C3740" ];
 const CATEGORIES = [
-  { 
-    id: 1,
-    name: "BEBIDAS",
-    color: colors[1],
-    img: "n1.png"
-  },
-  { 
-    id: 2, 
-    name: "LIMPEZA", 
-    color: colors[2],
-    img: "n2.png"
-  },
-  { 
-    id: 3, 
-    name: "HIGIENE", 
-    color: colors[3],
-    img: "n3.png"
-  },
-  { 
-    id: 4, 
-    name: "UTILIDADES",
-    color: colors[4],
-    img: "n4.png"
-  },
-  { 
-    id: 5, 
-    name: "LATICÍNIOS",
-    color: colors[5],
-    img: "n5.png"
-  },
-  { 
-    id: 6, 
-    name: "PROTEÍNA",
-    color: colors[6],
-    img: "n6.png"
-  },
-  { 
-    id: 7, 
-    name: "BÁSICO",
-    color: colors[7],
-    img: "n7.png"
-  },
-  { 
-    id: 8, 
-    name: "PADARIA", 
-    color: colors[8],
-    img: "n8.png"
-  },
-  { 
-    id: 9, 
-    name: "HORTIFRUTI",
-    color: colors[9],
-    img: "n9.png"
-  },
-  { 
-    id: 10,
-     name: "OUTROS", 
-     color: colors[10],
-    img: "n10.png"
-  }
+  { id: 1, name: "BEBIDAS", img: "n1W.svg", color: "#BE9171", order: 1 },
+  { id: 2, name: "LIMPEZA", img: "n2W.svg", color: "#BE9171", order: 2 },
+  { id: 3, name: "HIGIENE", img: "n3W.svg", color: "#BE9171", order: 3 },
+  { id: 4, name: "UTILIDADES", img: "n4W.svg", color: "#BE9171", order: 4 },
+  { id: 5, name: "LATICÍNIOS", img: "n5W.svg", color: "#BE9171", order: 5 },
+  { id: 6, name: "PROTEÍNA", img: "n6W.svg", color: "#BE9171", order: 6 },
+  { id: 7, name: "BÁSICO", img: "n7W.svg", color: "#BE9171", order: 7 },
+  { id: 8, name: "PADARIA", img: "n8W.svg", color: "#BE9171", order: 8 },
+  { id: 9, name: "HORTIFRUTI", img: "n9W.svg", color: "#BE9171", order: 9 },
+  { id: 10, name: "OUTROS", img: "n10W.svg", color: "#BE9171", order: 10 },
 ];
 
-let catalogItems = [
-  { id: 1, name: "Suco de Uva", category_id: 1 },
-  { id: 2, name: "Refrigerante", category_id: 1 },
-  { id: 3, name: "Sabão em Pó", category_id: 2 },
-  { id: 4, name: "Desinfetante", category_id: 2 },
-  { id: 5, name: "Creme Dental", category_id: 3 },
-  { id: 6, name: "Papel Higiênico", category_id: 3 },
-  { id: 7, name: "Pano de Prato", category_id: 4 },
-  { id: 18, name: "Pilha AAA", category_id: 4 },
-  { id: 8, name: "Queijo Mussarela", category_id: 5 },
-  { id: 9, name: "Iogurte Natural", category_id: 5 },
-  { id: 10, name: "Frango Filé", category_id: 6 },
-  { id: 11, name: "Ovos", category_id: 6 },
-  { id: 12, name: "Arroz Agulhinha", category_id: 7 },
-  { id: 13, name: "Feijão Preto", category_id: 7 },
-  { id: 14, name: "Pão de Forma", category_id: 8 },
-  { id: 15, name: "Pão Francês", category_id: 8 },
-  { id: 16, name: "Banana Prata", category_id: 9 },
-  { id: 17, name: "Tomate Italiano", category_id: 9 },
-  { id: 19, name: "outra coisa", category_id: 10 },
+const DEFAULT_PRODUCTS = [
+  { id: 1, name: "Suco de Uva", categoryId: 1, favorite: true, order: 1 },
+  { id: 2, name: "Refrigerante", categoryId: 1, favorite: false, order: 2 },
+  { id: 3, name: "Sabão em Pó", categoryId: 2, favorite: false, order: 1 },
+  { id: 4, name: "Desinfetante", categoryId: 2, favorite: false, order: 2 },
+  { id: 5, name: "Creme Dental", categoryId: 3, favorite: false, order: 1 },
+  { id: 6, name: "Papel Higiênico", categoryId: 3, favorite: true, order: 2 },
+  { id: 7, name: "Pano de Prato", categoryId: 4, favorite: false, order: 1 },
+  { id: 18, name: "Pilha AAA", categoryId: 4, favorite: false, order: 2 },
+  { id: 8, name: "Queijo Mussarela", categoryId: 5, favorite: true, order: 1 },
+  { id: 9, name: "Iogurte Natural", categoryId: 5, favorite: false, order: 2 },
+  { id: 10, name: "Frango Filé", categoryId: 6, favorite: true, order: 1 },
+  { id: 11, name: "Ovos", categoryId: 6, favorite: true, order: 2 },
+  { id: 12, name: "Arroz Agulhinha", categoryId: 7, favorite: true, order: 1 },
+  { id: 13, name: "Feijão Preto", categoryId: 7, favorite: true, order: 2 },
+  { id: 14, name: "Pão de Forma", categoryId: 8, favorite: false, order: 1 },
+  { id: 15, name: "Pão Francês", categoryId: 8, favorite: true, order: 2 },
+  { id: 16, name: "Banana Prata", categoryId: 9, favorite: true, order: 1 },
+  { id: 17, name: "Tomate Italiano", categoryId: 9, favorite: false, order: 2 },
+  { id: 19, name: "Outra Coisa", categoryId: 10, favorite: false, order: 1 },
 ];
 
-class RelationalShoppingDB {
-  constructor(dbName = 'split_screen_grocery_db') {
-    this.dbName = dbName;
-    if (!localStorage.getItem(this.dbName)) {
-      localStorage.setItem(this.dbName, JSON.stringify({ shopping_list: [] }));
-    }
-  }
-  _readRaw() { return JSON.parse(localStorage.getItem(this.dbName)); }
-  _saveRaw(data) { localStorage.setItem(this.dbName, JSON.stringify(data)); }
-  getShoppingList() { return this._readRaw().shopping_list || []; }
-  insertIntoShoppingList(item) {
-    const db = this._readRaw();
-    if (db.shopping_list.find(i => i.item_id === item.id)) return;
-    db.shopping_list.push({ id: Date.now(), item_id: item.id, name: item.name, category_id: item.category_id });
-    this._saveRaw(db);
-  }
-  deleteFromShoppingList(transactionId) {
-    const db = this._readRaw();
-    db.shopping_list = db.shopping_list.filter(i => i.id !== transactionId);
-    this._saveRaw(db);
+const STORAGE_KEYS = {
+  products: "gracie-products-v2",
+  shopping: "gracie-shopping-v2",
+  sortMode: "gracie-sort-mode-v2",
+};
+
+let products = [];
+let shoppingProductIds = new Set();
+let selectedCategoryId = CATEGORIES[0].id;
+let sortMode = "category";
+let openSwipeRow = null;
+
+const SWIPE_DELETE_WIDTH = 92;
+const SWIPE_OPEN_THRESHOLD = 42;
+const SWIPE_DIRECTION_THRESHOLD = 8;
+
+const elements = {
+  addButton: document.getElementById("btn-add"),
+  addItemForm: document.getElementById("add-item-form"),
+  categoryContainer: document.getElementById("categories-container"),
+  categoryTitle: document.getElementById("ctgTitle"),
+  closeModalButton: document.getElementById("btn-close-modal"),
+  itemModal: document.getElementById("item-modal"),
+  itemNameInput: document.getElementById("input-item-name"),
+  leftItemsGrid: document.getElementById("left-items-grid"),
+  rightItemsGrid: document.getElementById("right-items-grid"),
+  selectCategory: document.getElementById("select-category"),
+  sortRadios: document.querySelectorAll('input[name="sort-mode"]'),
+  tabButtons: document.querySelectorAll(".tab-btn"),
+};
+
+function databaseLoad(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch (error) {
+    console.error(`Erro ao carregar ${key}:`, error);
+    return fallback;
   }
 }
 
-const db = new RelationalShoppingDB();
-let selectedCategoryId = null;
+function databaseSave(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Erro ao salvar ${key}:`, error);
+  }
+}
 
-const ctgCntnr = document.getElementById('categories-container');
-const leftItemsGrid = document.getElementById('left-items-grid');
-const rightItemsGrid = document.getElementById('right-items-grid');
-const sortToggle = document.getElementById('sort-toggle');
-const ctgTitle = document.getElementById('ctgTitle');
-const itemModal = document.getElementById('item-modal');
-const addItemForm = document.getElementById('add-item-form');
-const selectCategory = document.getElementById('select-category');
+function productLoad() {
+  const stored = databaseLoad(STORAGE_KEYS.products, null);
+  products = Array.isArray(stored) ? stored : structuredClone(DEFAULT_PRODUCTS);
+}
 
+function productSave() {
+  databaseSave(STORAGE_KEYS.products, products);
+}
 
-// ============================================
+function shoppingLoad() {
+  const stored = databaseLoad(STORAGE_KEYS.shopping, []);
+  shoppingProductIds = new Set(Array.isArray(stored) ? stored : []);
+}
 
+function shoppingSave() {
+  databaseSave(STORAGE_KEYS.shopping, [...shoppingProductIds]);
+}
 
+function shoppingToggle(productId) {
+  if (shoppingProductIds.has(productId)) {
+    shoppingProductIds.delete(productId);
+  } else {
+    shoppingProductIds.add(productId);
+  }
 
-function initCategories() {
-  ctgCntnr.innerHTML = '';
+  shoppingSave();
+}
 
-  CATEGORIES.forEach(cat =>
-  {
-    const btn = document.createElement('button');
-    const img = document.createElement('img');
-    btn.className = 'category-btn';
-    
-    btn.style.background = cat.color; //`linear-gradient( 135deg, ${cor1} 0%, ${cor2} 100%)`;
-    img.src = `img/${cat.img}`;
-    img.className = "category-img"
-    btn.appendChild(img);
-    
-    //btn.title = cat.name;
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      selectedCategoryId = cat.id;
-      ctgTitle.textContent = cat.name;
-      renderLeftPanel();
+function productFavoriteToggle(productId) {
+  const product = products.find((item) => item.id === productId);
+
+  if (!product) {
+    return;
+  }
+
+  product.favorite = !product.favorite;
+  productSave();
+}
+
+function productDelete(productId) {
+  products = products.filter((product) => product.id !== productId);
+  shoppingProductIds.delete(productId);
+
+  productSave();
+  shoppingSave();
+
+  swipeRowClose();
+  productRender();
+  shoppingRender();
+}
+
+function compareName(a, b) {
+  return a.name.localeCompare(b.name, "pt-BR", {
+    sensitivity: "base",
+  });
+}
+
+function compareOrder(a, b) {
+  return (a.order ?? 0) - (b.order ?? 0);
+}
+
+function compareCategory(a, b) {
+  const categoryA = CATEGORIES.find((category) => category.id === a.categoryId);
+  const categoryB = CATEGORIES.find((category) => category.id === b.categoryId);
+
+  return (
+    compareOrder(categoryA ?? { order: 0 }, categoryB ?? { order: 0 }) ||
+    compareName(a, b)
+  );
+}
+
+function compareFavorites(a, b) {
+  return Number(b.favorite) - Number(a.favorite) || compareName(a, b);
+}
+
+function compareProducts(a, b) {
+  if (sortMode === "alphabetical") {
+    return compareName(a, b);
+  }
+
+  if (sortMode === "favorites") {
+    return compareFavorites(a, b);
+  }
+
+  return compareCategory(a, b);
+}
+
+function categoryRender() {
+  elements.categoryContainer.innerHTML = "";
+
+  [...CATEGORIES].sort(compareOrder).forEach((category) => {
+    const button = document.createElement("button");
+    const image = document.createElement("img");
+
+    button.type = "button";
+    button.className = "category-btn";
+    button.title = category.name;
+    button.setAttribute("aria-label", category.name);
+    button.classList.toggle("active", category.id === selectedCategoryId);
+
+    image.src = `img/${category.img}`;
+    image.alt = "";
+
+    button.appendChild(image);
+
+    button.addEventListener("click", () => {
+      swipeRowClose();
+      selectedCategoryId = category.id;
+      categoryRender();
+      productRender();
     });
-    ctgCntnr.appendChild(btn);
+
+    elements.categoryContainer.appendChild(button);
   });
 }
 
-
-
-
-// =============================================
-
-
-
-
-function renderLeftPanel() {
-  leftItemsGrid.innerHTML = '';
-  if (!selectedCategoryId) return;
-  const filteredItems = catalogItems.filter(item => item.category_id === selectedCategoryId);
-  const catDef = CATEGORIES.find(c => c.id === selectedCategoryId);
-  
-  if (filteredItems.length === 0) {
-    leftItemsGrid.innerHTML = `<div class="empty-state">Nenhum item nesta categoria. Clique no "+" acima para criar!</div>`;
+function swipeRowClose(row = openSwipeRow) {
+  if (!row) {
     return;
   }
 
-  filteredItems.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.style.backgroundColor = catDef.color;
-    card.innerHTML = `<div class="item-left-content"><span class="favorite-star">★</span><span>${item.name}</span></div>`;
-    
-    card.addEventListener('click', () => { db.insertIntoShoppingList(item); renderRightPanel(); });
-    leftItemsGrid.appendChild(card);
-  });
+  const content = row.querySelector(".swipe-content");
+
+  if (content) {
+    content.style.transform = "translateX(0px)";
+  }
+
+  row.classList.remove("open");
+
+  if (openSwipeRow === row) {
+    openSwipeRow = null;
+  }
 }
 
-function renderRightPanel() {
-  rightItemsGrid.innerHTML = '';
-  let list = db.getShoppingList();
-  if (list.length === 0) {
-    rightItemsGrid.innerHTML = `<div class="empty-state">Lista vazia. Clique nos favoritos à esquerda!</div>`;
+function swipeRowsCloseExcept(row) {
+  if (openSwipeRow && openSwipeRow !== row) {
+    swipeRowClose(openSwipeRow);
+  }
+}
+
+function swipeDeleteCreate(card, product, onDelete) {
+  const swipeRow = document.createElement("div");
+  const deleteButton = document.createElement("button");
+  const content = document.createElement("div");
+
+  let pointerId = null;
+  let startX = 0;
+  let startY = 0;
+  let startOffset = 0;
+  let currentOffset = 0;
+  let gestureMode = null;
+  let suppressClick = false;
+
+  swipeRow.className = "swipe-row";
+
+  deleteButton.type = "button";
+  deleteButton.className = "swipe-delete-button";
+  deleteButton.textContent = "Excluir";
+  deleteButton.setAttribute(
+    "aria-label",
+    `Excluir permanentemente ${product.name}`,
+  );
+
+  content.className = "swipe-content";
+  content.appendChild(card);
+
+  function offsetSet(value, animate = false) {
+    currentOffset = Math.max(-SWIPE_DELETE_WIDTH, Math.min(0, value));
+    content.classList.toggle("animating", animate);
+    content.style.transform = `translateX(${currentOffset}px)`;
+  }
+
+  function gestureFinish() {
+    if (gestureMode === "horizontal") {
+      const shouldOpen = currentOffset <= -SWIPE_OPEN_THRESHOLD;
+
+      if (shouldOpen) {
+        swipeRowsCloseExcept(swipeRow);
+        offsetSet(-SWIPE_DELETE_WIDTH, true);
+        swipeRow.classList.add("open");
+        openSwipeRow = swipeRow;
+      } else {
+        offsetSet(0, true);
+        swipeRow.classList.remove("open");
+
+        if (openSwipeRow === swipeRow) {
+          openSwipeRow = null;
+        }
+      }
+
+      suppressClick = true;
+
+      window.setTimeout(() => {
+        suppressClick = false;
+      }, 80);
+    }
+
+    pointerId = null;
+    gestureMode = null;
+  }
+
+  content.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    swipeRowsCloseExcept(swipeRow);
+
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+    startOffset = swipeRow.classList.contains("open")
+      ? -SWIPE_DELETE_WIDTH
+      : 0;
+    currentOffset = startOffset;
+    gestureMode = null;
+
+    content.classList.remove("animating");
+  });
+
+  content.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) {
+      return;
+    }
+
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+
+    if (!gestureMode) {
+      if (
+        Math.abs(deltaX) < SWIPE_DIRECTION_THRESHOLD &&
+        Math.abs(deltaY) < SWIPE_DIRECTION_THRESHOLD
+      ) {
+        return;
+      }
+
+      gestureMode =
+        Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
+    }
+
+    if (gestureMode !== "horizontal") {
+      return;
+    }
+
+    event.preventDefault();
+    offsetSet(startOffset + deltaX);
+  });
+
+  content.addEventListener("pointerup", (event) => {
+    if (event.pointerId !== pointerId) {
+      return;
+    }
+
+    gestureFinish();
+  });
+
+  content.addEventListener("pointercancel", (event) => {
+    if (event.pointerId !== pointerId) {
+      return;
+    }
+
+    gestureFinish();
+  });
+
+  content.addEventListener(
+    "click",
+    (event) => {
+      if (suppressClick) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    },
+    true,
+  );
+
+  deleteButton.addEventListener("click", () => {
+    onDelete();
+  });
+
+  swipeRow.append(deleteButton, content);
+
+  return swipeRow;
+}
+
+function itemCardCreate(product, options = {}) {
+  const {
+    selected = false,
+    showFavorite = false,
+    deletable = false,
+    onRowClick,
+    onFavoriteClick,
+    onDelete,
+  } = options;
+
+  const card = document.createElement("div");
+  const rowButton = document.createElement("button");
+  const name = document.createElement("span");
+
+  card.className = "item-card";
+  card.classList.toggle("selected", selected);
+  card.classList.toggle("no-favorite", !showFavorite);
+
+  rowButton.type = "button";
+  rowButton.className = "item-row-button";
+
+  name.className = "item-name";
+  name.textContent = product.name;
+
+  rowButton.appendChild(name);
+  rowButton.addEventListener("click", onRowClick);
+  card.appendChild(rowButton);
+
+  if (showFavorite) {
+    const favoriteButton = document.createElement("button");
+
+    favoriteButton.type = "button";
+    favoriteButton.className = "favorite-button";
+    favoriteButton.classList.toggle("active", Boolean(product.favorite));
+    favoriteButton.textContent = product.favorite ? "★" : "☆";
+    favoriteButton.setAttribute(
+      "aria-label",
+      product.favorite
+        ? `Remover ${product.name} dos favoritos`
+        : `Adicionar ${product.name} aos favoritos`,
+    );
+
+    favoriteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      onFavoriteClick();
+    });
+
+    card.insertBefore(favoriteButton, rowButton);
+  }
+
+  if (deletable) {
+    return swipeDeleteCreate(card, product, onDelete);
+  }
+
+  return card;
+}
+
+function productRender() {
+  elements.leftItemsGrid.innerHTML = "";
+
+  const category = CATEGORIES.find(
+    (item) => item.id === selectedCategoryId,
+  );
+
+  elements.categoryTitle.textContent = category?.name ?? "";
+
+  const categoryProducts = products
+    .filter((product) => product.categoryId === selectedCategoryId)
+    .sort(compareName);
+
+  if (categoryProducts.length === 0) {
+    elements.leftItemsGrid.innerHTML =
+      '<div class="empty-state">Nenhum item nesta categoria.</div>';
     return;
   }
-  sortToggle.checked ? list.sort((a,b) => a.name.localeCompare(b.name)) : list.sort((a,b) => a.category_id - b.category_id);
-  list.forEach(item => {
-    const catDef = CATEGORIES.find(c => c.id === item.category_id) || { color: '#fff' };
-    const card = document.createElement('div');
-    card.className = 'item-card';
-    card.style.backgroundColor = catDef.color;
-    card.innerHTML = `<div class="item-left-content"><span>${item.name}</span></div>`;
-    
-    card.addEventListener('click', () => { db.deleteFromShoppingList(item.id); renderRightPanel(); });
-    rightItemsGrid.appendChild(card);
+
+  categoryProducts.forEach((product) => {
+    const card = itemCardCreate(product, {
+      selected: shoppingProductIds.has(product.id),
+      showFavorite: true,
+      deletable: true,
+      onDelete: () => {
+        productDelete(product.id);
+      },
+      onRowClick: () => {
+        shoppingToggle(product.id);
+        productRender();
+        shoppingRender();
+      },
+      onFavoriteClick: () => {
+        productFavoriteToggle(product.id);
+        productRender();
+
+        if (document.getElementById("right-panel").classList.contains("active")) {
+          shoppingRender();
+        }
+      },
+    });
+
+    elements.leftItemsGrid.appendChild(card);
   });
 }
 
-document.getElementById('btn-add').addEventListener('click', () => {
-  selectCategory.innerHTML = '';
-  CATEGORIES.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c.id; opt.textContent = c.name;
-    selectCategory.appendChild(opt);
+function shoppingRender() {
+  elements.rightItemsGrid.innerHTML = "";
+
+  const shoppingProducts = products
+    .filter((product) => shoppingProductIds.has(product.id))
+    .sort(compareProducts);
+
+  if (shoppingProducts.length === 0) {
+    elements.rightItemsGrid.innerHTML =
+      '<div class="empty-state">A lista de compras está vazia.</div>';
+    return;
+  }
+
+  shoppingProducts.forEach((product) => {
+    const card = itemCardCreate(product, {
+      showFavorite: false,
+      onRowClick: () => {
+        shoppingToggle(product.id);
+        shoppingRender();
+        productRender();
+      },
+    });
+
+    elements.rightItemsGrid.appendChild(card);
   });
-  itemModal.showModal();
-  document.getElementById('input-item-name').focus();
-});
+}
 
-const closeForm = () => { itemModal.close(); addItemForm.reset(); };
-document.getElementById('btn-close-modal').addEventListener('click', closeForm);
+function panelShow(panelId) {
+  swipeRowClose();
 
-addItemForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const name = document.getElementById('input-item-name').value.trim();
-  const catId = parseInt(selectCategory.value, 10);
-  const newItem = { id: Date.now(), name: name, category_id: catId };
-  
-  catalogItems.push(newItem);
-  closeForm();
-  
-  if (selectedCategoryId === catId) { renderLeftPanel(); }
-});
+  document.querySelectorAll(".panel").forEach((panel) => {
+    const active = panel.id === panelId;
 
-// Drag Split Screen - Modified boundary snap limits from 10% to 90%
-// Drag Split Screen - Fully Compatible with Desktop Mouse and iPhone Touch
-const leftPanel = document.getElementById('left-panel');
-const divider = document.getElementById('split-divider');
-const container = document.getElementById('list-container');
-let isDragging = false;
+    panel.classList.toggle("active", active);
+    panel.hidden = !active;
+  });
 
-// 1. Listen for standard pointer initialization (handles mousedown and touchstart)
-divider.addEventListener('pointerdown', (e) => { 
-  isDragging = true; 
-  divider.classList.add('dragging'); 
-  document.body.style.cursor = 'col-resize';
-  
-  // Prevents text selection ghosting on iOS safari
-  e.preventDefault(); 
-});
+  elements.tabButtons.forEach((button) => {
+    const active = button.dataset.panel === panelId;
 
-// 2. Track movements seamlessly across touch and mouse events
-document.addEventListener('pointermove', (e) => {
-  if (!isDragging) return;
-  
-  const rect = container.getBoundingClientRect();
-  
-  // Unified pointer tracking calculation
-  let pct = ((e.clientX - rect.left) / rect.width) * 100;
-  
-  // Boundary snap limits
-  if (pct < 10) pct = 10;
-  if (pct > 90) pct = 90;
-  
-  leftPanel.style.width = `${pct}%`;
-});
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
 
-// 3. Reset state on drag termination
-document.addEventListener('pointerup', () => { 
-  if (isDragging) { 
-    isDragging = false; 
-    divider.classList.remove('dragging'); 
-    document.body.style.cursor = 'default'; 
-  } 
-});
+  if (panelId === "right-panel") {
+    shoppingRender();
+  }
+}
 
-// Safety fallbacks to ensure dragging releases if cursor departs the screen window
-document.addEventListener('pointercancel', () => {
-  if (isDragging) {
-    isDragging = false;
-    divider.classList.remove('dragging');
-    document.body.style.cursor = 'default';
+function sortModeLoad() {
+  const savedMode = databaseLoad(STORAGE_KEYS.sortMode, "category");
+  const validModes = new Set(["category", "alphabetical", "favorites"]);
+
+  sortMode = validModes.has(savedMode) ? savedMode : "category";
+
+  elements.sortRadios.forEach((radio) => {
+    radio.checked = radio.value === sortMode;
+  });
+}
+
+function modalCategoryOptionsRender() {
+  elements.selectCategory.innerHTML = "";
+
+  [...CATEGORIES].sort(compareOrder).forEach((category) => {
+    const option = document.createElement("option");
+
+    option.value = String(category.id);
+    option.textContent = category.name;
+
+    elements.selectCategory.appendChild(option);
+  });
+
+  elements.selectCategory.value = String(selectedCategoryId);
+}
+
+function modalOpen() {
+  modalCategoryOptionsRender();
+  elements.itemModal.showModal();
+
+  requestAnimationFrame(() => {
+    elements.itemNameInput.focus();
+  });
+}
+
+function modalClose() {
+  elements.itemModal.close();
+  elements.addItemForm.reset();
+}
+
+document.addEventListener("pointerdown", (event) => {
+  if (openSwipeRow && !openSwipeRow.contains(event.target)) {
+    swipeRowClose();
   }
 });
 
-sortToggle.addEventListener('change', renderRightPanel);
-initCategories();
-renderRightPanel();
+elements.tabButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    panelShow(button.dataset.panel);
+  });
+});
 
+elements.sortRadios.forEach((radio) => {
+  radio.addEventListener("change", () => {
+    if (!radio.checked) {
+      return;
+    }
 
+    sortMode = radio.value;
+    databaseSave(STORAGE_KEYS.sortMode, sortMode);
+    shoppingRender();
+  });
+});
 
+elements.addButton.addEventListener("click", modalOpen);
+elements.closeModalButton.addEventListener("click", modalClose);
 
+elements.addItemForm.addEventListener("submit", (event) => {
+  event.preventDefault();
 
+  const name = elements.itemNameInput.value.trim();
+  const categoryId = Number(elements.selectCategory.value);
 
+  if (!name || !Number.isInteger(categoryId)) {
+    return;
+  }
+
+  const categoryProducts = products.filter(
+    (product) => product.categoryId === categoryId,
+  );
+
+  products.push({
+    id: Date.now(),
+    name,
+    categoryId,
+    favorite: false,
+    order: categoryProducts.length + 1,
+  });
+
+  productSave();
+  selectedCategoryId = categoryId;
+
+  modalClose();
+  categoryRender();
+  productRender();
+});
+
+elements.itemModal.addEventListener("click", (event) => {
+  if (event.target === elements.itemModal) {
+    modalClose();
+  }
+});
+
+productLoad();
+shoppingLoad();
+sortModeLoad();
+categoryRender();
+productRender();
+shoppingRender();
+panelShow("left-panel");
