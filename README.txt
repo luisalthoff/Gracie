@@ -57,3 +57,11 @@ V4 — SWIPE PURCHASE + VOICE
   abrir compras
 - Voice searches the complete catalog, regardless of the selected category.
 - Ambiguous product matches are never guessed.
+
+V4.1 — MICROPHONE PERMISSION FIX
+- The microphone button is no longer silently disabled when speech recognition
+  is unavailable.
+- Tapping the button explicitly requests microphone permission first.
+- Clear messages explain unsupported browsers, denied permission, non-HTTPS
+  pages, missing microphones, or microphones busy in another app.
+- For iPhone testing, open the GitHub Pages URL directly in Safari first.

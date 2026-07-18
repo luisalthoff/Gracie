@@ -837,8 +837,7 @@ function voiceCommandProcess(transcript) {
 
 function voiceRecognitionSetup() {
   if (!SpeechRecognition) {
-    elements.voiceButton.disabled = true;
-    elements.voiceButton.title = "Reconhecimento de voz indisponível";
+    elements.voiceButton.title = "Verificar reconhecimento de voz";
     return;
   }
 
@@ -881,10 +880,23 @@ function voiceRecognitionSetup() {
   });
 }
 
-function voiceToggle() {
-  if (!voiceRecognition) {
+async function microphonePermissionEnsure() {
+  if (!window.isSecureContext) {
+    throw new Error("insecure-context");
+  }
+
+  if (!navigator.mediaDevices?.getUserMedia) {
+    throw new Error("microphone-api-unavailable");
+  }
+
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  stream.getTracks().forEach((track) => track.stop());
+}
+
+async function voiceToggle() {
+  if (!SpeechRecognition || !voiceRecognition) {
     voiceStatusShow(
-      "O reconhecimento de voz não está disponível neste navegador.",
+      "Este navegador não oferece reconhecimento de voz. Abra o Gracie diretamente no Safari para testar.",
       "error",
     );
     return;
@@ -895,10 +907,31 @@ function voiceToggle() {
     return;
   }
 
+  elements.voiceButton.disabled = true;
+  voiceStatusShow("Preparando o microfone…");
+
   try {
+    await microphonePermissionEnsure();
     voiceRecognition.start();
   } catch (error) {
     console.error("Erro ao iniciar reconhecimento de voz:", error);
+
+    const messages = {
+      "NotAllowedError": "Permissão do microfone não concedida. Autorize o microfone para este site nos ajustes do Safari.",
+      "NotFoundError": "Nenhum microfone foi encontrado.",
+      "NotReadableError": "O microfone está sendo usado por outro aplicativo.",
+      "AbortError": "O acesso ao microfone foi interrompido.",
+      "insecure-context": "O microfone exige uma conexão HTTPS.",
+      "microphone-api-unavailable": "O acesso ao microfone não está disponível neste navegador.",
+    };
+
+    voiceStatusShow(
+      messages[error.name] ?? messages[error.message] ??
+        `Não consegui acessar o microfone (${error.name || "erro desconhecido"}).`,
+      "error",
+    );
+  } finally {
+    elements.voiceButton.disabled = false;
   }
 }
 
