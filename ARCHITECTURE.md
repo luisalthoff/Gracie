@@ -101,3 +101,30 @@ compareOrder();
 - Voice commands do not change the active category.
 - Ambiguous matches are never guessed.
 - Every voice command produces visible feedback.
+
+
+## Shopping completion gesture
+
+- Lista: swipe left, then tap Excluir for permanent deletion.
+- Compras: swipe left past the threshold and release; the row disappears.
+- A normal tap in Compras performs no action.
+- Crossing a swipe threshold requests a subtle haptic tick when supported.
+
+## Voice rules
+
+Voice acts only on existing catalog data.
+
+Supported:
+- Add an existing product to Compras.
+- Remove an existing product from Compras.
+- Open Lista.
+- Open Compras.
+
+Not supported:
+- Create products.
+- Delete products permanently.
+- Change favorites.
+- Assign categories.
+
+Voice searches the entire product catalog and never changes the active category.
+Ambiguous matches are reported instead of guessed.

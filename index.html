@@ -59,14 +59,26 @@
 
         <h1 id="ctgTitle" class="category-title"></h1>
 
-        <button
-          id="btn-add"
-          class="icon-button add-button"
-          type="button"
-          aria-label="Adicionar item"
-        >
-          <img src="img/add2.svg" alt="" />
-        </button>
+        <div class="options-actions">
+          <button
+            id="btn-voice"
+            class="icon-button voice-button"
+            type="button"
+            aria-label="Usar comando de voz"
+            title="Comando de voz"
+          >
+            <span aria-hidden="true">🎙</span>
+          </button>
+
+          <button
+            id="btn-add"
+            class="icon-button add-button"
+            type="button"
+            aria-label="Adicionar item"
+          >
+            <img src="img/add2.svg" alt="" />
+          </button>
+        </div>
       </section>
 
       <section class="tab-container">
@@ -99,6 +111,14 @@
         </div>
       </section>
     </main>
+
+    <div
+      id="voice-status"
+      class="voice-status"
+      role="status"
+      aria-live="polite"
+      hidden
+    ></div>
 
     <dialog id="item-modal">
       <h2>Novo item</h2>

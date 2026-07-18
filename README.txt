@@ -41,3 +41,19 @@ V3.1 FIX
   in iPhone Safari.
 - Removed an accidentally duplicated outside-tap listener.
 - The shopping panel is refreshed immediately after selecting an item.
+
+
+V4 — SWIPE PURCHASE + VOICE
+- Compras: tapping an item no longer removes it.
+- Compras: swipe left past the threshold to mark it purchased immediately.
+- Lista: swipe left still reveals Excluir and requires a tap.
+- A subtle haptic tick is requested when the swipe threshold is crossed.
+  Unsupported browsers simply ignore it.
+- Voice button added.
+- Portuguese commands:
+  adicionar <item>
+  remover <item>
+  abrir lista
+  abrir compras
+- Voice searches the complete catalog, regardless of the selected category.
+- Ambiguous product matches are never guessed.

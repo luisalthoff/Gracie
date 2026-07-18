@@ -44,10 +44,18 @@ let shoppingProductIds = new Set();
 let selectedCategoryId = CATEGORIES[0].id;
 let sortMode = "category";
 let openSwipeRow = null;
+let voiceRecognition = null;
+let voiceListening = false;
+let voiceStatusTimer = null;
+
+const SpeechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const SWIPE_DELETE_WIDTH = 92;
 const SWIPE_OPEN_THRESHOLD = 42;
 const SWIPE_DIRECTION_THRESHOLD = 8;
+const SWIPE_COMPLETE_MINIMUM = 92;
+const SWIPE_COMPLETE_RATIO = 0.34;
 
 const elements = {
   addButton: document.getElementById("btn-add"),
@@ -62,6 +70,8 @@ const elements = {
   selectCategory: document.getElementById("select-category"),
   sortRadios: document.querySelectorAll('input[name="sort-mode"]'),
   tabButtons: document.querySelectorAll(".tab-btn"),
+  voiceButton: document.getElementById("btn-voice"),
+  voiceStatus: document.getElementById("voice-status"),
 };
 
 function databaseLoad(key, fallback) {
@@ -222,6 +232,145 @@ function swipeRowsCloseExcept(row) {
   }
 }
 
+
+function hapticTick() {
+  if (typeof navigator.vibrate === "function") {
+    navigator.vibrate(10);
+  }
+}
+
+function swipeCompleteCreate(card, product, onComplete) {
+  const swipeRow = document.createElement("div");
+  const background = document.createElement("div");
+  const content = document.createElement("div");
+
+  let pointerId = null;
+  let startX = 0;
+  let startY = 0;
+  let currentOffset = 0;
+  let gestureMode = null;
+  let thresholdCrossed = false;
+  let completing = false;
+
+  swipeRow.className = "swipe-row swipe-complete-row";
+
+  background.className = "swipe-complete-background";
+  background.textContent = "Comprado";
+  background.setAttribute("aria-hidden", "true");
+
+  content.className = "swipe-content";
+  content.appendChild(card);
+
+  function thresholdGet() {
+    return Math.max(
+      SWIPE_COMPLETE_MINIMUM,
+      swipeRow.clientWidth * SWIPE_COMPLETE_RATIO,
+    );
+  }
+
+  function offsetSet(value, animate = false) {
+    const width = Math.max(swipeRow.clientWidth, 1);
+    currentOffset = Math.max(-width, Math.min(0, value));
+    content.classList.toggle("animating", animate);
+    content.style.transform = `translateX(${currentOffset}px)`;
+  }
+
+  function gestureFinish() {
+    if (gestureMode === "horizontal") {
+      if (Math.abs(currentOffset) >= thresholdGet()) {
+        completing = true;
+        swipeRow.classList.add("completing");
+        content.classList.remove("animating");
+        content.style.transform = `translateX(-${swipeRow.clientWidth}px)`;
+
+        window.setTimeout(() => {
+          onComplete();
+        }, 180);
+      } else {
+        offsetSet(0, true);
+      }
+    }
+
+    pointerId = null;
+    gestureMode = null;
+    thresholdCrossed = false;
+  }
+
+  content.addEventListener("pointerdown", (event) => {
+    if (completing) {
+      return;
+    }
+
+    if (event.pointerType === "mouse" && event.button !== 0) {
+      return;
+    }
+
+    swipeRowsCloseExcept(swipeRow);
+
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+    currentOffset = 0;
+    gestureMode = null;
+    thresholdCrossed = false;
+
+    content.classList.remove("animating");
+  });
+
+  content.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId || completing) {
+      return;
+    }
+
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+
+    if (!gestureMode) {
+      if (
+        Math.abs(deltaX) < SWIPE_DIRECTION_THRESHOLD &&
+        Math.abs(deltaY) < SWIPE_DIRECTION_THRESHOLD
+      ) {
+        return;
+      }
+
+      gestureMode =
+        Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
+    }
+
+    if (gestureMode !== "horizontal") {
+      return;
+    }
+
+    event.preventDefault();
+    offsetSet(Math.min(0, deltaX));
+
+    const crossedNow = Math.abs(currentOffset) >= thresholdGet();
+
+    if (crossedNow && !thresholdCrossed) {
+      thresholdCrossed = true;
+      hapticTick();
+    } else if (!crossedNow) {
+      thresholdCrossed = false;
+    }
+  });
+
+  content.addEventListener("pointerup", (event) => {
+    if (event.pointerId === pointerId) {
+      gestureFinish();
+    }
+  });
+
+  content.addEventListener("pointercancel", (event) => {
+    if (event.pointerId === pointerId) {
+      gestureFinish();
+    }
+  });
+
+  swipeRow.append(background, content);
+
+  return swipeRow;
+}
+
 function swipeDeleteCreate(card, product, onDelete) {
   const swipeRow = document.createElement("div");
   const deleteButton = document.createElement("button");
@@ -234,6 +383,7 @@ function swipeDeleteCreate(card, product, onDelete) {
   let currentOffset = 0;
   let gestureMode = null;
   let suppressClick = false;
+  let thresholdCrossed = false;
 
   swipeRow.className = "swipe-row";
 
@@ -298,6 +448,7 @@ function swipeDeleteCreate(card, product, onDelete) {
       : 0;
     currentOffset = startOffset;
     gestureMode = null;
+    thresholdCrossed = false;
 
     content.classList.remove("animating");
   });
@@ -328,6 +479,15 @@ function swipeDeleteCreate(card, product, onDelete) {
 
     event.preventDefault();
     offsetSet(startOffset + deltaX);
+
+    const crossedNow = currentOffset <= -SWIPE_OPEN_THRESHOLD;
+
+    if (crossedNow && !thresholdCrossed) {
+      thresholdCrossed = true;
+      hapticTick();
+    } else if (!crossedNow) {
+      thresholdCrossed = false;
+    }
   });
 
   content.addEventListener("pointerup", (event) => {
@@ -371,9 +531,11 @@ function itemCardCreate(product, options = {}) {
     selected = false,
     showFavorite = false,
     deletable = false,
+    swipeComplete = false,
     onRowClick,
     onFavoriteClick,
     onDelete,
+    onSwipeComplete,
   } = options;
 
   const card = document.createElement("div");
@@ -391,7 +553,11 @@ function itemCardCreate(product, options = {}) {
   name.textContent = product.name;
 
   rowButton.appendChild(name);
-  rowButton.addEventListener("click", onRowClick);
+
+  if (typeof onRowClick === "function") {
+    rowButton.addEventListener("click", onRowClick);
+  }
+
   card.appendChild(rowButton);
 
   if (showFavorite) {
@@ -418,6 +584,10 @@ function itemCardCreate(product, options = {}) {
 
   if (deletable) {
     return swipeDeleteCreate(card, product, onDelete);
+  }
+
+  if (swipeComplete) {
+    return swipeCompleteCreate(card, product, onSwipeComplete);
   }
 
   return card;
@@ -485,8 +655,10 @@ function shoppingRender() {
   shoppingProducts.forEach((product) => {
     const card = itemCardCreate(product, {
       showFavorite: false,
-      onRowClick: () => {
-        shoppingToggle(product.id);
+      swipeComplete: true,
+      onSwipeComplete: () => {
+        shoppingProductIds.delete(product.id);
+        shoppingSave();
         shoppingRender();
         productRender();
       },
@@ -494,6 +666,240 @@ function shoppingRender() {
 
     elements.rightItemsGrid.appendChild(card);
   });
+}
+
+
+function textNormalize(value) {
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLocaleLowerCase("pt-BR")
+    .replace(/[^\p{Letter}\p{Number}\s]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function voiceStatusShow(message, type = "") {
+  window.clearTimeout(voiceStatusTimer);
+
+  elements.voiceStatus.textContent = message;
+  elements.voiceStatus.className = `voice-status ${type}`.trim();
+  elements.voiceStatus.hidden = false;
+
+  voiceStatusTimer = window.setTimeout(() => {
+    elements.voiceStatus.hidden = true;
+  }, 3200);
+}
+
+function voiceProductMatches(searchText) {
+  const normalizedSearch = textNormalize(searchText);
+
+  if (!normalizedSearch) {
+    return [];
+  }
+
+  const exactMatches = products.filter(
+    (product) => textNormalize(product.name) === normalizedSearch,
+  );
+
+  if (exactMatches.length > 0) {
+    return exactMatches;
+  }
+
+  return products.filter((product) => {
+    const normalizedName = textNormalize(product.name);
+
+    return (
+      normalizedName.includes(normalizedSearch) ||
+      normalizedSearch.includes(normalizedName)
+    );
+  });
+}
+
+function voiceProductAction(action, spokenName) {
+  const matches = voiceProductMatches(spokenName);
+
+  if (matches.length === 0) {
+    voiceStatusShow(`Não encontrei "${spokenName}".`, "error");
+    return;
+  }
+
+  if (matches.length > 1) {
+    voiceStatusShow(
+      `Encontrei mais de um item com "${spokenName}".`,
+      "error",
+    );
+    return;
+  }
+
+  const product = matches[0];
+
+  if (action === "add") {
+    if (shoppingProductIds.has(product.id)) {
+      voiceStatusShow(`${product.name} já está em Compras.`);
+      return;
+    }
+
+    shoppingProductIds.add(product.id);
+    shoppingSave();
+    productRender();
+    shoppingRender();
+    voiceStatusShow(`${product.name} adicionado.`, "success");
+    return;
+  }
+
+  if (!shoppingProductIds.has(product.id)) {
+    voiceStatusShow(`${product.name} não está em Compras.`);
+    return;
+  }
+
+  shoppingProductIds.delete(product.id);
+  shoppingSave();
+  productRender();
+  shoppingRender();
+  voiceStatusShow(`${product.name} removido.`, "success");
+}
+
+function voiceCommandProcess(transcript) {
+  const command = textNormalize(transcript);
+
+  if (!command) {
+    voiceStatusShow("Não entendi o comando.", "error");
+    return;
+  }
+
+  const openListCommands = new Set([
+    "abrir lista",
+    "mostrar lista",
+    "ir para lista",
+    "lista",
+  ]);
+
+  const openShoppingCommands = new Set([
+    "abrir compras",
+    "mostrar compras",
+    "ir para compras",
+    "compras",
+  ]);
+
+  if (openListCommands.has(command)) {
+    panelShow("left-panel");
+    voiceStatusShow("Lista aberta.", "success");
+    return;
+  }
+
+  if (openShoppingCommands.has(command)) {
+    panelShow("right-panel");
+    voiceStatusShow("Compras aberta.", "success");
+    return;
+  }
+
+  const commandGroups = [
+    {
+      action: "add",
+      prefixes: [
+        "adicionar ",
+        "adicione ",
+        "incluir ",
+        "inclua ",
+        "colocar ",
+        "coloque ",
+        "comprar ",
+      ],
+    },
+    {
+      action: "remove",
+      prefixes: [
+        "remover ",
+        "remova ",
+        "tirar ",
+        "tire ",
+        "retirar ",
+        "retire ",
+      ],
+    },
+  ];
+
+  for (const group of commandGroups) {
+    const prefix = group.prefixes.find((item) => command.startsWith(item));
+
+    if (prefix) {
+      voiceProductAction(group.action, command.slice(prefix.length).trim());
+      return;
+    }
+  }
+
+  voiceStatusShow(
+    `Comando não reconhecido: "${transcript}".`,
+    "error",
+  );
+}
+
+function voiceRecognitionSetup() {
+  if (!SpeechRecognition) {
+    elements.voiceButton.disabled = true;
+    elements.voiceButton.title = "Reconhecimento de voz indisponível";
+    return;
+  }
+
+  voiceRecognition = new SpeechRecognition();
+  voiceRecognition.lang = "pt-BR";
+  voiceRecognition.continuous = false;
+  voiceRecognition.interimResults = false;
+  voiceRecognition.maxAlternatives = 1;
+
+  voiceRecognition.addEventListener("start", () => {
+    voiceListening = true;
+    elements.voiceButton.classList.add("listening");
+    elements.voiceButton.setAttribute("aria-label", "Parar comando de voz");
+    voiceStatusShow("Estou ouvindo…");
+  });
+
+  voiceRecognition.addEventListener("result", (event) => {
+    const transcript = event.results[0][0].transcript.trim();
+    voiceCommandProcess(transcript);
+  });
+
+  voiceRecognition.addEventListener("error", (event) => {
+    const messages = {
+      "audio-capture": "Não consegui acessar o microfone.",
+      "not-allowed": "Permissão do microfone não concedida.",
+      "no-speech": "Não ouvi nenhum comando.",
+      network: "Falha de conexão no reconhecimento de voz.",
+    };
+
+    voiceStatusShow(
+      messages[event.error] ?? "Não foi possível reconhecer o comando.",
+      "error",
+    );
+  });
+
+  voiceRecognition.addEventListener("end", () => {
+    voiceListening = false;
+    elements.voiceButton.classList.remove("listening");
+    elements.voiceButton.setAttribute("aria-label", "Usar comando de voz");
+  });
+}
+
+function voiceToggle() {
+  if (!voiceRecognition) {
+    voiceStatusShow(
+      "O reconhecimento de voz não está disponível neste navegador.",
+      "error",
+    );
+    return;
+  }
+
+  if (voiceListening) {
+    voiceRecognition.stop();
+    return;
+  }
+
+  try {
+    voiceRecognition.start();
+  } catch (error) {
+    console.error("Erro ao iniciar reconhecimento de voz:", error);
+  }
 }
 
 function panelShow(panelId) {
@@ -582,6 +988,7 @@ elements.sortRadios.forEach((radio) => {
   });
 });
 
+elements.voiceButton.addEventListener("click", voiceToggle);
 elements.addButton.addEventListener("click", modalOpen);
 elements.closeModalButton.addEventListener("click", modalClose);
 
@@ -623,6 +1030,7 @@ elements.itemModal.addEventListener("click", (event) => {
 
 productLoad();
 shoppingLoad();
+voiceRecognitionSetup();
 sortModeLoad();
 categoryRender();
 productRender();

@@ -20,6 +20,8 @@
   --category-active-end: #a16e33;
   --favorite: #f6ae2d;
   --favorite-off: #c9c9c9;
+  --success: #3f7f4c;
+  --success-dark: #315f3a;
 }
 
 html,
@@ -166,8 +168,39 @@ button {
   white-space: nowrap;
 }
 
-.add-button {
+.options-actions {
   justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.voice-button {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.voice-button.listening {
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.13);
+  animation: voice-pulse 1.1s ease-in-out infinite;
+}
+
+.voice-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@keyframes voice-pulse {
+  50% {
+    transform: scale(1.08);
+  }
 }
 
 .add-button img {
@@ -256,6 +289,27 @@ button {
 
 .swipe-delete-button:active {
   background: #b42318;
+}
+
+.swipe-complete-row {
+  background: var(--success);
+}
+
+.swipe-complete-background {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 22px;
+  background: var(--success);
+  color: #ffffff;
+  font-weight: 750;
+  letter-spacing: 0.01em;
+}
+
+.swipe-complete-row.completing .swipe-content {
+  transition: transform 180ms ease-in;
 }
 
 .swipe-content {
@@ -434,4 +488,30 @@ dialog h2 {
     min-height: 72px;
     padding-block: 8px;
   }
+}
+
+
+.voice-status {
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  width: min(calc(100vw - 32px), 430px);
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(32, 32, 32, 0.92);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  font-size: 0.92rem;
+  text-align: center;
+  transform: translateX(-50%);
+  backdrop-filter: blur(8px);
+}
+
+.voice-status.success {
+  background: rgba(49, 95, 58, 0.95);
+}
+
+.voice-status.error {
+  background: rgba(145, 35, 28, 0.95);
 }
