@@ -46,6 +46,9 @@ let sortMode = "category";
 let openSwipeRow = null;
 let voiceRecognition = null;
 let voiceListening = false;
+let voiceSessionActive = false;
+let voiceRestartAllowed = true;
+let voiceSilenceTimer = null;
 let voiceStatusTimer = null;
 
 const SpeechRecognition =
@@ -56,6 +59,8 @@ const SWIPE_OPEN_THRESHOLD = 42;
 const SWIPE_DIRECTION_THRESHOLD = 8;
 const SWIPE_COMPLETE_MINIMUM = 92;
 const SWIPE_COMPLETE_RATIO = 0.34;
+const VOICE_SILENCE_LIMIT = 10000;
+const VOICE_RESTART_DELAY = 250;
 
 const elements = {
   addButton: document.getElementById("btn-add"),
@@ -835,6 +840,51 @@ function voiceCommandProcess(transcript) {
   );
 }
 
+function voiceSilenceReset() {
+  window.clearTimeout(voiceSilenceTimer);
+
+  if (!voiceSessionActive) {
+    return;
+  }
+
+  voiceSilenceTimer = window.setTimeout(() => {
+    voiceSessionStop("Microfone desligado após 10 segundos de silêncio.");
+  }, VOICE_SILENCE_LIMIT);
+}
+
+function voiceSessionStop(message = "Microfone desligado.") {
+  voiceSessionActive = false;
+  voiceRestartAllowed = false;
+  window.clearTimeout(voiceSilenceTimer);
+
+  if (voiceRecognition && voiceListening) {
+    voiceRecognition.stop();
+  }
+
+  voiceListening = false;
+  elements.voiceButton.classList.remove("listening");
+  elements.voiceButton.setAttribute("aria-label", "Usar comando de voz");
+
+  if (message) {
+    voiceStatusShow(message);
+  }
+}
+
+function voiceRecognitionStart() {
+  if (!voiceSessionActive || voiceListening || !voiceRecognition) {
+    return;
+  }
+
+  try {
+    voiceRecognition.start();
+  } catch (error) {
+    if (error.name !== "InvalidStateError") {
+      console.error("Erro ao reiniciar reconhecimento de voz:", error);
+      voiceSessionStop("Não consegui manter o microfone ativo.");
+    }
+  }
+}
+
 function voiceRecognitionSetup() {
   if (!SpeechRecognition) {
     elements.voiceButton.title = "Verificar reconhecimento de voz";
@@ -850,23 +900,37 @@ function voiceRecognitionSetup() {
   voiceRecognition.addEventListener("start", () => {
     voiceListening = true;
     elements.voiceButton.classList.add("listening");
-    elements.voiceButton.setAttribute("aria-label", "Parar comando de voz");
-    voiceStatusShow("Estou ouvindo…");
+    elements.voiceButton.setAttribute("aria-label", "Desligar comando de voz");
+
+    if (voiceSessionActive) {
+      voiceStatusShow("Estou ouvindo…");
+      voiceSilenceReset();
+    }
+  });
+
+  voiceRecognition.addEventListener("speechstart", () => {
+    voiceSilenceReset();
   });
 
   voiceRecognition.addEventListener("result", (event) => {
-    const transcript = event.results[0][0].transcript.trim();
+    const transcript = event.results[event.results.length - 1][0].transcript.trim();
     voiceCommandProcess(transcript);
+    voiceSilenceReset();
   });
 
   voiceRecognition.addEventListener("error", (event) => {
     const messages = {
       "audio-capture": "Não consegui acessar o microfone.",
       "not-allowed": "Permissão do microfone não concedida.",
-      "no-speech": "Não ouvi nenhum comando.",
+      "service-not-allowed": "O serviço de reconhecimento de voz foi bloqueado.",
       network: "Falha de conexão no reconhecimento de voz.",
     };
 
+    if (event.error === "no-speech" || event.error === "aborted") {
+      return;
+    }
+
+    voiceRestartAllowed = false;
     voiceStatusShow(
       messages[event.error] ?? "Não foi possível reconhecer o comando.",
       "error",
@@ -875,6 +939,17 @@ function voiceRecognitionSetup() {
 
   voiceRecognition.addEventListener("end", () => {
     voiceListening = false;
+
+    if (voiceSessionActive && voiceRestartAllowed) {
+      window.setTimeout(voiceRecognitionStart, VOICE_RESTART_DELAY);
+      return;
+    }
+
+    if (voiceSessionActive && !voiceRestartAllowed) {
+      voiceSessionStop("");
+      return;
+    }
+
     elements.voiceButton.classList.remove("listening");
     elements.voiceButton.setAttribute("aria-label", "Usar comando de voz");
   });
@@ -902,8 +977,8 @@ async function voiceToggle() {
     return;
   }
 
-  if (voiceListening) {
-    voiceRecognition.stop();
+  if (voiceSessionActive) {
+    voiceSessionStop();
     return;
   }
 
@@ -912,7 +987,10 @@ async function voiceToggle() {
 
   try {
     await microphonePermissionEnsure();
-    voiceRecognition.start();
+    voiceSessionActive = true;
+    voiceRestartAllowed = true;
+    voiceSilenceReset();
+    voiceRecognitionStart();
   } catch (error) {
     console.error("Erro ao iniciar reconhecimento de voz:", error);
 

@@ -128,3 +128,12 @@ Not supported:
 
 Voice searches the entire product catalog and never changes the active category.
 Ambiguous matches are reported instead of guessed.
+
+
+## Voice session behavior
+
+- One microphone tap starts a temporary voice session.
+- Recognition cycles are restarted automatically while the session remains active.
+- Each detected phrase resets a 10-second inactivity timer.
+- Ten seconds without speech ends the session.
+- Tapping the microphone while active ends the session immediately.

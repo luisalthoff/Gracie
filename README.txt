@@ -65,3 +65,11 @@ V4.1 — MICROPHONE PERMISSION FIX
 - Clear messages explain unsupported browsers, denied permission, non-HTTPS
   pages, missing microphones, or microphones busy in another app.
 - For iPhone testing, open the GitHub Pages URL directly in Safari first.
+
+
+V4.2 — VOICE SESSION
+- Tap the microphone once and say multiple commands.
+- Recognition automatically restarts between phrases when Safari ends a recognition cycle.
+- Every spoken phrase resets a 10-second silence timer.
+- After 10 seconds without speech, the microphone turns off automatically.
+- Tap the microphone again at any time to turn it off immediately.
